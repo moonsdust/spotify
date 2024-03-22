@@ -6,7 +6,10 @@
 # License: MIT
 # Pre-requisites: 00-install_packages.R has been ran to install the necessary packages.
 
-# IMPORTANT NOTE: If this script does not run it is likely because you need to create a 
+# IMPORTANT NOTE: popularity column is updated frequently by Spotify and there is a chance that 
+# the results when replicated might be slightly off from what is described in the paper.
+
+# IMPORTANT NOTE NO.2: If this script does not run it is likely because you need to create a 
 # Spotify Developer Account and a new app for spotifyr. After doing this,
 # call library("usethis") in your console in your RStudio environment, 
 # call edit_r_environ() to open the .Renviron file and add in the following 
