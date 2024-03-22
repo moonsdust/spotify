@@ -3,9 +3,9 @@
 ## Overview
 
 ## Important Notes
-- `raw_playlists_data.csv` was last updated: Friday Mar 22 2:19am EDT 
+- `raw_playlists_data.csv` was last updated **Friday Mar 22 2:19am EDT**
 - `popularity` column is updated frequently by Spotify and there is a chance that the results 
-when replicated might be slightly off from what is described in the paper if `01-download_data.R`is 
+when replicated might be slightly off from what is described in the paper if `01-download_data.R` is 
 ran to replace the current `raw_playlists_data.csv` file.
 
 ## File Structure
