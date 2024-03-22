@@ -14,3 +14,4 @@ install.packages("janitor") # To clean datasets
 install.packages("dplyr")
 install.packages("ggplot2") # To make graphs
 install.packages("spotifyr") # Spotify API
+install.packages("usethis")
