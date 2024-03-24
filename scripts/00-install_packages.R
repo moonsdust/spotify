@@ -16,4 +16,3 @@ install.packages("ggplot2") # To make graphs
 install.packages("spotifyr") # Spotify API
 install.packages("usethis") 
 install.packages("arrow") # To allow Parquet files to be create
-install.packages("lubridate") 
