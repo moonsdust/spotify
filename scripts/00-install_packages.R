@@ -16,6 +16,7 @@ install.packages("ggplot2") # To make graphs
 install.packages("spotifyr") # Spotify API
 install.packages("usethis") 
 install.packages("arrow") # To allow Parquet files to be create
+install.packages("ggcorrplot") # For correlation matrix
 # For models
 install.packages("rstanarm")
 install.packages("modelsummary")
