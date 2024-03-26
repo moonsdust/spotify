@@ -1,4 +1,4 @@
-# Analysis of top songs qualities before, during, and after 2020 and their popularity determined by Spotify
+# Analysis of top songs before, during, and after 2020 and their popularity determined by Spotify
 
 ## Overview
 
