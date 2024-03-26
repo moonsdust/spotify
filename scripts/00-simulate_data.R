@@ -11,10 +11,11 @@
 library(tidyverse)
 
 #### Simulate data ####
-data <- 
+simulated_data <- 
   tibble(
-    level = rnorm(n = 1000, mean = 100, sd = 10) |> floor(),
-    weakness = sample(x=c("fire", "not first"), size = 1000, replace = TRUE)
+    year = sample(x=c("2018", "2019", "2020", "2021", "2022", "2023"), size = 1000, replace = TRUE),
+    loudness = rnorm(n = 1000, mean = 100, sd = 10),
+    mode_name = sample(x=c("minor", "major"), size = 1000, replace = TRUE),
   )
 
 
