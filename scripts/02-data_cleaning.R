@@ -11,6 +11,7 @@
 library(tidyverse)
 library(janitor)
 library(arrow)
+library(dplyr)
 
 #### Clean data ####
 # Read in raw data 
@@ -35,10 +36,16 @@ cleaned_data <-
   cleaned_data |>
   mutate(
     hit_year = case_when(
-      (playlist_name == "Top Hits of 2018") ~ 2018,
-      (playlist_name == "Top Hits of 2019") ~ 2019,
-      (playlist_name == "Top Tracks of 2020") ~ 2020,
-      (playlist_name == "Top Tracks of 2023") ~ 2023,
+      (playlist_name == "2014 Billboard Year End Hot 100") ~ 2014,
+      (playlist_name == "2015 Billboard Year End Hot 100") ~ 2015,
+      (playlist_name == "2016 Billboard Year End Hot 100") ~ 2016,
+      (playlist_name == "2017 Billboard Year End Hot 100") ~ 2017,
+      (playlist_name == "Billboard Year-End Hot 100: 2018") ~ 2018,
+      (playlist_name == "Billboard Year-End Hot 100: 2019") ~ 2019,
+      (playlist_name == "Billboard Year-End Hot 100: 2020") ~ 2020,
+      (playlist_name == "Billboard Year-End Hot 100: 2021") ~ 2021,
+      (playlist_name == "Billboard Year-End Hot 100: 2022") ~ 2022,
+      (playlist_name == "Billboard Year-End Hot 100: 2023") ~ 2023,
       TRUE ~ 0
     )
   ) |>
@@ -46,7 +53,10 @@ cleaned_data <-
     hit_year, track_name, track_album_name, 
     track_duration_ms, track_popularity, danceability, energy, loudness, valence, 
     tempo, mode_name, key_mode
-  )
-  
+  ) 
+
+# Remove duplicate rows
+cleaned_data <- distinct(cleaned_data)
+
 #### Save data ####
 write_parquet(cleaned_data, "data/analysis_data/playlists_analysis_data.parquet")
