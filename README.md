@@ -1,4 +1,4 @@
-# Analysis of the characteristics of top songs before, during, and after 2020 and their popularity
+# Analysis of the characteristics of top songs before, during, and after 2020
 
 ## Overview
 
