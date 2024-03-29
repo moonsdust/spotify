@@ -31,7 +31,7 @@ cleaned_data <-
          track_duration_ms, track_popularity, danceability, energy, loudness, valence, 
          tempo, mode_name, key_mode)
 
-# Create hit_year column and remove playlist_name column
+# Create hit_year column and period column and remove playlist_name column
 cleaned_data <- 
   cleaned_data |>
   mutate(
@@ -49,10 +49,25 @@ cleaned_data <-
       TRUE ~ 0
     )
   ) |>
+  mutate(
+    period = case_when(
+      (hit_year == "2014") ~ "Before Pandemic",
+      (hit_year == "2015") ~ "Before Pandemic",
+      (hit_year == "2016") ~ "Before Pandemic",
+      (hit_year == "2017") ~ "Before Pandemic",
+      (hit_year == "2018") ~ "Before Pandemic",
+      (hit_year == "2019") ~ "Before Pandemic",
+      (hit_year == "2020") ~ "During and After Pandemic",
+      (hit_year == "2021") ~ "During and After Pandemic",
+      (hit_year == "2022") ~ "During and After Pandemic",
+      (hit_year == "2023") ~ "During and After Pandemic",
+      TRUE ~ "None"
+    )
+  ) |>
   select(
     hit_year, track_name, track_album_name, 
     track_duration_ms, track_popularity, danceability, energy, loudness, valence, 
-    tempo, mode_name, key_mode
+    tempo, mode_name, key_mode, period
   ) 
 
 # Remove duplicate rows
