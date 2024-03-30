@@ -70,8 +70,14 @@ cleaned_data <-
     tempo, mode_name, key_mode, period
   ) 
 
-# Remove duplicate rows
+# Remove duplicate rows and then remove track_name and track_album_name
 cleaned_data <- distinct(cleaned_data)
+cleaned_data <- 
+  cleaned_data |>
+  select(
+    hit_year, track_popularity, danceability, energy, loudness, valence, mode_name, key_mode, period
+  ) 
+
 
 #### Save data ####
 write_parquet(cleaned_data, "data/analysis_data/playlists_analysis_data.parquet")
