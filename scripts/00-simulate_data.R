@@ -11,6 +11,8 @@
 library(tidyverse)
 library(testthat)
 
+set.seed(646)
+
 #### Simulate data ####
 ### Expected Columns: hit_year, track_popularity, energy, loudness, valence, mode_name, key_mode, period
 num_of_top_songs <- 1000
