@@ -11,6 +11,7 @@
 #### Workspace setup ####
 library(tidyverse)
 library(arrow)
+library(testthat)
 
 #### Test data ####
 analysis_data <- read_parquet("data/analysis_data/playlists_analysis_data.parquet")
