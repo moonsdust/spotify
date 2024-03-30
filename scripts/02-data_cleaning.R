@@ -23,13 +23,11 @@ cleaned_data <-
   clean_names()
 
 # Select columns: playlist_name, track_name, track_album_name, 
-# track_duration_ms, track_popularity, danceability, energy, loudness, valence, 
-# tempo, mode_name, key_mode
+# track_duration_ms, track_popularity, energy, loudness, valence, mode_name, key_mode
 cleaned_data <- 
   cleaned_data |>
   select(playlist_name, track_name, track_album_name, 
-         track_duration_ms, track_popularity, danceability, energy, loudness, valence, 
-         tempo, mode_name, key_mode)
+         track_duration_ms, track_popularity, energy, loudness, valence, mode_name, key_mode)
 
 # Create hit_year column and period column and remove playlist_name column
 cleaned_data <- 
@@ -66,8 +64,7 @@ cleaned_data <-
   ) |>
   select(
     hit_year, track_name, track_album_name, 
-    track_duration_ms, track_popularity, danceability, energy, loudness, valence, 
-    tempo, mode_name, key_mode, period
+    track_duration_ms, track_popularity, energy, loudness, valence, mode_name, key_mode, period
   ) 
 
 # Remove duplicate rows and then remove track_name and track_album_name
@@ -75,7 +72,7 @@ cleaned_data <- distinct(cleaned_data)
 cleaned_data <- 
   cleaned_data |>
   select(
-    hit_year, track_popularity, danceability, energy, loudness, valence, mode_name, key_mode, period
+    hit_year, track_popularity, energy, loudness, valence, mode_name, key_mode, period
   ) 
 
 
