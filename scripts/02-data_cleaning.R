@@ -29,7 +29,7 @@ cleaned_data <-
   select(playlist_name, track_name, track_album_name, 
          track_duration_ms, track_popularity, energy, loudness, valence, mode_name, key_mode)
 
-# Create hit_year column and period column and remove playlist_name column
+# Create hit_year, period, before_pandemic, major, and minor columns and remove playlist_name column
 cleaned_data <- 
   cleaned_data |>
   mutate(
@@ -62,9 +62,31 @@ cleaned_data <-
       TRUE ~ "None"
     )
   ) |>
+  mutate(
+    before_pandemic = case_when(
+      (period == "Before Pandemic") ~ 1,
+      (period == "During and After Pandemic") ~ 0,
+      TRUE ~ 1
+    ) 
+  )|> 
+  mutate(
+    major = case_when(
+          (mode_name == "major") ~ 1,
+          (mode_name == "minor") ~ 0,
+          TRUE ~ 0
+          ) 
+  )|>
+  mutate(
+    minor = case_when(
+      (mode_name == "minor") ~ 1,
+      (mode_name == "major") ~ 0,
+      TRUE ~ 0
+    ) 
+  ) |>
   select(
-    hit_year, track_name, track_album_name, 
-    track_duration_ms, track_popularity, energy, loudness, valence, mode_name, key_mode, period
+    hit_year, track_name, track_album_name, track_duration_ms, 
+    track_popularity, energy, loudness, valence, mode_name, key_mode, period, before_pandemic, 
+    major, minor
   ) 
 
 # Remove duplicate rows and then remove track_name and track_album_name
@@ -72,7 +94,8 @@ cleaned_data <- distinct(cleaned_data)
 cleaned_data <- 
   cleaned_data |>
   select(
-    hit_year, track_popularity, energy, loudness, valence, mode_name, key_mode, period
+    hit_year, track_duration_ms, track_popularity, energy, loudness, valence, 
+    mode_name, key_mode, period, before_pandemic, major, minor
   ) 
 
 

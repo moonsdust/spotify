@@ -49,16 +49,49 @@ stopifnot(
   # 13. valence has a min number that is equal or greater than 0.0
   analysis_data$valence |> min() >= 0.0,
   # 14. valence has a max number that is less than or equal to 1.0
-  analysis_data$valence |> max() <= 1.0
+  analysis_data$valence |> max() <= 1.0,
+  
+  
+  # 15. track_duration_ms is numeric
+  class(analysis_data$track_duration_ms) == "numeric",
+  # 16. track_duration_ms has a min number that is greater than 0 
+  analysis_data$track_duration_ms |> min() > 0,
+  # 17. before_pandemic is numeric 
+  class(analysis_data$before_pandemic) == "numeric",
+  # 18. before_pandemic's min is either 0 or 1  
+  analysis_data$before_pandemic |> min() %in% c(0, 1),
+  # 19. before_pandemic's max is either 0 or 1
+  analysis_data$before_pandemic |> max() %in% c(0, 1),
+  
+  # 20. major is numeric 
+  class(analysis_data$major) == "numeric",
+  # 21. major's min is either 0 or 1  
+  analysis_data$major |> min() %in% c(0, 1),
+  # 22. major's max is either 0 or 1
+  analysis_data$major |> max() %in% c(0, 1),
+  
+  # 20. major is numeric 
+  class(analysis_data$major) == "numeric",
+  # 21. major's min is either 0 or 1  
+  analysis_data$major |> min() %in% c(0, 1),
+  # 22. major's max is either 0 or 1
+  analysis_data$major |> max() %in% c(0, 1),
+  
+  # 23. minor is numeric 
+  class(analysis_data$minor) == "numeric",
+  # 24. minor's min is either 0 or 1  
+  analysis_data$minor |> min() %in% c(0, 1),
+  # 25. minor's max is either 0 or 1
+  analysis_data$minor |> max() %in% c(0, 1)
 )
 
-# 15. mode_name's class is character
+# 26. mode_name's class is character
 expect_equal(class(analysis_data$mode_name), "character") 
-# 16. mode_name's unique observations are: "major", "minor"
+# 27. mode_name's unique observations are: "major", "minor"
 expect_equal(sort(unique(analysis_data$mode_name)), sort(c("major", "minor")))
-# 17. key_mode's class is character 
+# 28. key_mode's class is character 
 expect_equal(class(analysis_data$key_mode), "character") 
-# 18. key_mode's unique observations are "F minor", "F# major", "G# major", "A# minor", "C# minor", "C# major", 
+# 29. key_mode's unique observations are "F minor", "F# major", "G# major", "A# minor", "C# minor", "C# major", 
 # "A major", "C major", "B major", "G major", "D major", "D# major", 
 # "C minor", "F major", "E minor", "E major", "G minor", "A minor", 
 # "B minor", "F# minor", "G# minor", "A# major", "D minor", "D# minor"
@@ -68,5 +101,5 @@ expect_equal(sort(unique(analysis_data$key_mode)), sort(c("F minor", "F# major",
                                                            "B minor", "F# minor", "G# minor", "A# major", "D minor", "D# minor")))
 
 
-# 19. Check that there are 1000 observations in the dataset total
+# 30. Check that there are 1000 observations in the dataset total
 expect_length(analysis_data$hit_year, 1000)

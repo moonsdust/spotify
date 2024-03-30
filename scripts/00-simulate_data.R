@@ -14,12 +14,13 @@ library(testthat)
 set.seed(646)
 
 #### Simulate data ####
-### Expected Columns: hit_year, track_popularity, energy, loudness, valence, mode_name, key_mode, period
+### Expected Columns: hit_year, track_duration_ms, track_popularity, energy, loudness, valence, mode_name, key_mode, period, before_pandemic, major, minor
 num_of_top_songs <- 1000
 
 simulated_data <- 
   tibble(
     hit_year = sample(x=c(2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023), size = num_of_top_songs, replace = TRUE),
+    track_duration_ms = round(runif(num_of_top_songs, min = 0, max = 10000000)),
     track_popularity = round(runif(n = num_of_top_songs, min = 0, max = 100)),
     energy = round(runif(n = num_of_top_songs, min = 0, max = 1), 1),
     loudness = runif(n = num_of_top_songs, min = -60, max = 0),
@@ -29,7 +30,10 @@ simulated_data <-
                             "A major", "C major", "B major", "G major", "D major", "D# major", 
                             "C minor", "F major", "E minor", "E major", "G minor", "A minor", 
                             "B minor", "F# minor", "G# minor", "A# major", "D minor", "D# minor"), size = num_of_top_songs, replace = TRUE),
-    period = sample(x=c("Before Pandemic", "During and After Pandemic"), size = num_of_top_songs, replace = TRUE)
+    period = sample(x=c("Before Pandemic", "During and After Pandemic"), size = num_of_top_songs, replace = TRUE),
+    before_pandemic = round(runif(n = num_of_top_songs, min = 0, max = 1)), 
+    major = round(runif(n = num_of_top_songs, min = 0, max = 1)),
+    minor = round(runif(n = num_of_top_songs, min = 0, max = 1))
   )
 
 #### Test simulated data #### 
@@ -66,16 +70,49 @@ stopifnot(
   # 13. valence has a min number that is equal or greater than 0.0
   simulated_data$valence |> min() >= 0.0,
   # 14. valence has a max number that is less than or equal to 1.0
-  simulated_data$valence |> max() <= 1.0
+  simulated_data$valence |> max() <= 1.0,
+  
+  
+  # 15. track_duration_ms is numeric
+  class(simulated_data$track_duration_ms) == "numeric",
+  # 16. track_duration_ms has a min number that is greater than 0 
+  simulated_data$track_duration_ms |> min() > 0,
+  # 17. before_pandemic is numeric 
+  class(simulated_data$before_pandemic) == "numeric",
+  # 18. before_pandemic's min is either 0 or 1  
+  simulated_data$before_pandemic |> min() %in% c(0, 1),
+  # 19. before_pandemic's max is either 0 or 1
+  simulated_data$before_pandemic |> max() %in% c(0, 1),
+  
+  # 20. major is numeric 
+  class(simulated_data$major) == "numeric",
+  # 21. major's min is either 0 or 1  
+  simulated_data$major |> min() %in% c(0, 1),
+  # 22. major's max is either 0 or 1
+  simulated_data$major |> max() %in% c(0, 1),
+  
+  # 20. major is numeric 
+  class(simulated_data$major) == "numeric",
+  # 21. major's min is either 0 or 1  
+  simulated_data$major |> min() %in% c(0, 1),
+  # 22. major's max is either 0 or 1
+  simulated_data$major |> max() %in% c(0, 1),
+  
+  # 23. minor is numeric 
+  class(simulated_data$minor) == "numeric",
+  # 24. minor's min is either 0 or 1  
+  simulated_data$minor |> min() %in% c(0, 1),
+  # 25. minor's max is either 0 or 1
+  simulated_data$minor |> max() %in% c(0, 1)
 )
 
-# 15. mode_name's class is character
+# 26. mode_name's class is character
 expect_equal(class(simulated_data$mode_name), "character") 
-# 16. mode_name's unique observations are: "major", "minor"
+# 27. mode_name's unique observations are: "major", "minor"
 expect_equal(sort(unique(simulated_data$mode_name)), sort(c("major", "minor")))
-# 17. key_mode's class is character 
+# 28. key_mode's class is character 
 expect_equal(class(simulated_data$key_mode), "character") 
-# 18. key_mode's unique observations are "F minor", "F# major", "G# major", "A# minor", "C# minor", "C# major", 
+# 29. key_mode's unique observations are "F minor", "F# major", "G# major", "A# minor", "C# minor", "C# major", 
 # "A major", "C major", "B major", "G major", "D major", "D# major", 
 # "C minor", "F major", "E minor", "E major", "G minor", "A minor", 
 # "B minor", "F# minor", "G# minor", "A# major", "D minor", "D# minor"
@@ -85,5 +122,5 @@ expect_equal(sort(unique(simulated_data$key_mode)), sort(c("F minor", "F# major"
                                                             "B minor", "F# minor", "G# minor", "A# major", "D minor", "D# minor")))
 
 
-# 19. Check that there are 1000 observations in the dataset total
+# 30. Check that there are 1000 observations in the dataset total
 expect_length(simulated_data$hit_year, 1000)
