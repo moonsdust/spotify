@@ -23,51 +23,44 @@ stopifnot(
   # 2. hit_year contains 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023
   analysis_data$hit_year |> sort() |> unique() == c(2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023),
   
-  # 3. Check that track_popularity is numeric 
-  class(analysis_data$track_popularity) == "numeric",
-  # 4. track_popularity has a min number that is equal or greater than 0
-  analysis_data$track_popularity |> min() >= 0,
-  # 5. track_popularity has a max number that is less than or equal to 100
-  analysis_data$track_popularity |> max() <= 100,
-  
-  # 6. Check energy is numeric 
+  # 3. Check energy is numeric 
   class(analysis_data$energy) == "numeric",
-  # 7. energy has a min number that is equal or greater than 0.0
+  # 4. energy has a min number that is equal or greater than 0.0
   analysis_data$energy |> min() >= 0.0,
-  # 8. energy has a max number that is less than or equal to 1.0
+  # 5. energy has a max number that is less than or equal to 1.0
   analysis_data$energy |> max() <= 1.0,
   
-  # 9. Check loudness is numeric 
+  # 6. Check loudness is numeric 
   class(analysis_data$loudness) == "numeric",
-  # 10. loudness has a min number that is equal or greater than -60
+  # 7. loudness has a min number that is equal or greater than -60
   analysis_data$loudness |> min() >= -60,
-  # 11. loudness has a max number that is less than or equal to 0
+  # 8. loudness has a max number that is less than or equal to 0
   analysis_data$loudness |> max() <= 0,
   
-  # 12. Check valence is numeric 
+  # 9. Check valence is numeric 
   class(analysis_data$valence) == "numeric",
-  # 13. valence has a min number that is equal or greater than 0.0
+  # 10. valence has a min number that is equal or greater than 0.0
   analysis_data$valence |> min() >= 0.0,
-  # 14. valence has a max number that is less than or equal to 1.0
+  # 11. valence has a max number that is less than or equal to 1.0
   analysis_data$valence |> max() <= 1.0,
   
   
-  # 15. track_duration_ms is numeric
+  # 12. track_duration_ms is numeric
   class(analysis_data$track_duration_ms) == "numeric",
-  # 16. track_duration_ms has a min number that is greater than 0 
+  # 13. track_duration_ms has a min number that is greater than 0 
   analysis_data$track_duration_ms |> min() > 0,
-  # 17. before_pandemic is numeric 
+  # 14. before_pandemic is numeric 
   class(analysis_data$before_pandemic) == "numeric",
-  # 18. before_pandemic's min is either 0 or 1  
+  # 15. before_pandemic's min is either 0 or 1  
   analysis_data$before_pandemic |> min() %in% c(0, 1),
-  # 19. before_pandemic's max is either 0 or 1
+  # 16. before_pandemic's max is either 0 or 1
   analysis_data$before_pandemic |> max() %in% c(0, 1),
   
-  # 20. major is numeric 
+  # 17. major is numeric 
   class(analysis_data$major) == "numeric",
-  # 21. major's min is either 0 or 1  
+  # 18. major's min is either 0 or 1  
   analysis_data$major |> min() %in% c(0, 1),
-  # 22. major's max is either 0 or 1
+  # 19. major's max is either 0 or 1
   analysis_data$major |> max() %in% c(0, 1),
   
   # 20. major is numeric 

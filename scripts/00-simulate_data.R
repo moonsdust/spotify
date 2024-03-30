@@ -14,14 +14,14 @@ library(testthat)
 set.seed(646)
 
 #### Simulate data ####
-### Expected Columns: hit_year, track_duration_ms, track_popularity, energy, loudness, valence, mode_name, key_mode, period, before_pandemic, major, minor
+### Expected Columns: hit_year, track_duration_ms, energy, loudness, valence, mode_name, key_mode, period, before_pandemic, major, minor
 num_of_top_songs <- 1000
 
 simulated_data <- 
   tibble(
     hit_year = sample(x=c(2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023), size = num_of_top_songs, replace = TRUE),
     track_duration_ms = round(runif(num_of_top_songs, min = 0, max = 10000000)),
-    track_popularity = round(runif(n = num_of_top_songs, min = 0, max = 100)),
+    # track_popularity = round(runif(n = num_of_top_songs, min = 0, max = 100)),
     energy = round(runif(n = num_of_top_songs, min = 0, max = 1), 1),
     loudness = runif(n = num_of_top_songs, min = -60, max = 0),
     valence = round(runif(n = num_of_top_songs, min = 0, max = 1), 1),
@@ -45,11 +45,11 @@ stopifnot(
   simulated_data$hit_year |> sort() |> unique() == c(2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023),
   
   # 3. Check that track_popularity is numeric 
-  class(simulated_data$track_popularity) == "numeric",
+  # class(simulated_data$track_popularity) == "numeric",
   # 4. track_popularity has a min number that is equal or greater than 0
-  simulated_data$track_popularity |> min() >= 0,
+  # simulated_data$track_popularity |> min() >= 0,
   # 5. track_popularity has a max number that is less than or equal to 100
-  simulated_data$track_popularity |> max() <= 100,
+  # simulated_data$track_popularity |> max() <= 100,
   
   # 6. Check energy is numeric 
   class(simulated_data$energy) == "numeric",
