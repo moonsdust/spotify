@@ -23,12 +23,12 @@ stopifnot(
   # 2. hit_year contains 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023
   analysis_data$hit_year |> sort() |> unique() == c(2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023),
   
-  # 3. Check energy is numeric 
-  class(analysis_data$energy) == "numeric",
-  # 4. energy has a min number that is equal or greater than 0.0
-  analysis_data$energy |> min() >= 0.0,
+  # 3. Check tempo is numeric 
+  class(analysis_data$tempo) == "numeric",
+  # 4. tempo has a min number that is greater than 0
+  analysis_data$tempo |> min() > 0,
   # 5. energy has a max number that is less than or equal to 1.0
-  analysis_data$energy |> max() <= 1.0,
+  # analysis_data$energy |> max() <= 1.0,
   
   # 6. Check loudness is numeric 
   class(analysis_data$loudness) == "numeric",
@@ -38,11 +38,11 @@ stopifnot(
   analysis_data$loudness |> max() <= 0,
   
   # 9. Check valence is numeric 
-  class(analysis_data$valence) == "numeric",
+  # class(analysis_data$valence) == "numeric",
   # 10. valence has a min number that is equal or greater than 0.0
-  analysis_data$valence |> min() >= 0.0,
+  # analysis_data$valence |> min() >= 0.0,
   # 11. valence has a max number that is less than or equal to 1.0
-  analysis_data$valence |> max() <= 1.0,
+  # analysis_data$valence |> max() <= 1.0,
   
   
   # 12. track_duration_ms is numeric

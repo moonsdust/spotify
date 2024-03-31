@@ -23,7 +23,7 @@ simulated_data <-
     track_duration_ms = round(runif(num_of_top_songs, min = 0, max = 10000000)),
     # track_popularity = round(runif(n = num_of_top_songs, min = 0, max = 100)),
     # energy = round(runif(n = num_of_top_songs, min = 0, max = 1), 1),
-    tempo = runif(n = num_of_top_songs, min = 0, max = 1),
+    tempo = runif(n = num_of_top_songs, min = 1, max = 10000000),
     loudness = runif(n = num_of_top_songs, min = -60, max = 0),
     # valence = round(runif(n = num_of_top_songs, min = 0, max = 1), 1),
     mode_name = sample(x=c("minor", "major"), size = num_of_top_songs, replace = TRUE),
@@ -54,8 +54,8 @@ stopifnot(
   
   # 6. Check tempo is numeric 
   class(simulated_data$tempo) == "numeric",
-  # 7. tempo has a min number that is greater than 0.0
-  simulated_data$tempo |> min() > 0.0,
+  # 7. tempo has a min number that is greater than 0
+  simulated_data$tempo |> min() > 0,
   # 8. energy has a max number that is less than or equal to 1.0
   # simulated_data$energy |> max() <= 1.0,
   
