@@ -1,6 +1,6 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Characteristics of Top Songs Has Changed from Pandemic Brain"
+subtitle: "An analysis of songs on Billboard's Year-End Hot 100 list (2014 to 2023)"
 author: Emily Su
 thanks: "Code and data are available at: https://github.com/moonsdust/top-songs."
 date: today
@@ -23,7 +23,13 @@ library(arrow)
 library(ggcorrplot)
 library(ggplot2)
 library(knitr)
+
+# Packages related to causal model created
 library(DiagrammeR)
+library(rsvg)
+library(magrittr)
+library(DiagrammeRsvg)
+library(png)
 
 # To be removed because this is from example
 library(palmerpenguins)
@@ -36,7 +42,14 @@ playlist_analysis_data <- read_parquet("../data/analysis_data/playlists_analysis
 
 # Introduction
 
+
 The estimand is the song characteristics from the Billboard Year-End Hot 100 singles such as its modality (major or minor), track duration, loudness, and tempo if a song was created before 2020 or during and after 2020.
+
+
+
+
+
+
 
 # Data {#sec-data}
 
@@ -45,10 +58,10 @@ The estimand is the song characteristics from the Billboard Year-End Hot 100 sin
 ## Data Source and Measurements
 
 ## Methodology
-
+The datasets used in this paper were retrieved, simulated, cleaned, analyzed, and tested using the R programming language [@citeR], tidyverse [@citetidyverse], knitr [@citeknitr], janitor [@citejanitor], dplyr [@citedplyr], ggplot2 [@citeggplot2], spotifyr [@citespotifyr], usethis [@citeusethis], arrow [@citearrow], ggcorrplot [@citeggcorrplot],
+testthat [@citetestthat]. The packages that were used for the model-related sections or used for the model itself are DiagrammeR [@citeDiagrammeR], rsvg [@citersvg], magrittr [@citemagrittr], DiagrammeRsvg [@citeDiagrammeRsvg], png [@citepng], rstanarm [@citerstanarm], and modelsummary [@citemodelsummary]. 
 
 # Model {#sec-model}
-
 
 ```{r}
 #| label: fig-causal-model
@@ -58,11 +71,11 @@ The estimand is the song characteristics from the Billboard Year-End Hot 100 sin
 #| message: false
 
 # Referenced https://www.erikigelstrom.com/articles/causal-graphs-in-r-with-diagrammer/
-grViz("
-digraph {
+# https://stackoverflow.com/questions/42737645/how-to-export-images-of-diagrammer-in-r
+causal_model <- "digraph {
   graph []
   node [shape = plaintext]
-    A [label = 'Hit song before 2020']
+    A [label = 'Hit song before 2020 or during and after 2020']
     B [label = 'Modality']
     C [label = 'Loudness']
     D [label = 'Duration']
@@ -73,8 +86,19 @@ digraph {
     D->A
     E->A
   { rank = same; }
-}
-")
+}"
+
+exporting_image <- grViz(causal_model) |>
+  export_svg() |>
+  charToRaw() |>
+  rsvg_png("casual_model.png", width = 1000)
+
+# NOTE: Had to save diagram and read it in as a image since grViz can be only render in HTML and 
+# not in PDFs 
+# Referenced https://stackoverflow.com/questions/23861000/displaying-images-in-r-in-version-3-1-0
+the_image <- readPNG("casual_model.png")
+plot.new()
+rasterImage(the_image, 0, 0, 0.9, 0.9)
 ```
 
 The goal of our modelling strategy is twofold. Firstly,...
@@ -107,7 +131,7 @@ We can use maths by including latex between dollar signs, for instance $\theta$.
 
 # Results {#sec-results}
 
-## Difference in song characteristics before 2020 (the pandemic) and during and after 2020 (the pandemic)
+## Difference in song characteristics before 2020 (the pandemic) and during and after 2020 (the pandemic) of songs from the Billboard Year-End Hot 100 singles 
 
 ### Scale and Modality
 ```{r}
@@ -188,8 +212,9 @@ proportion_of_each_mode |>
     ) |>
   kable()
 ```
+\newpage
 
-### Track Duration Over the Years
+### Track Duration
 
 ```{r}
 #| label: fig-track-duration-scatterplot
@@ -279,6 +304,8 @@ playlist_analysis_data |>
   kable()
 ```
 
+\newpage
+
 ### Loudness
 
 ```{r}
@@ -354,6 +381,7 @@ playlist_analysis_data |>
 ```
 
 
+\newpage
 
 ### Tempo
 
@@ -430,7 +458,7 @@ playlist_analysis_data |>
   kable()
 ```
 
-
+\newpage
 
 
 ## Model Results
@@ -492,7 +520,7 @@ Weaknesses and next steps should also be included.
 
 ```{r}
 #| label: fig-correlation-matrix
-#| fig-cap: Correlation between numerical characteristics of songs from Billboard Year-End Hot 100 single and if song was a hit before 2020/pandemic
+#| fig-cap: Correlation between numerical characteristics of songs from Billboard Year-End Hot 100 single and if song was a hit before 2020/the pandemic
 #| echo: false
 #| warning: false
 #| message: false
@@ -506,7 +534,6 @@ ggcorrplot(cor(numeric_playlist_analysis_data),
            hc.order = TRUE,
            outline.color = "white", lab = TRUE, legend.title = "Correlation") 
 ```
-
 
 
 # Model details {#sec-model-details}
