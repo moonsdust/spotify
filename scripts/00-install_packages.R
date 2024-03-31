@@ -20,5 +20,6 @@ install.packages("ggcorrplot") # For correlation matrix
 install.packages("testthat") # To test
 # For models
 install.packages("DiagrammeR")
+install.packages("rsvg")
 install.packages("rstanarm")
 install.packages("modelsummary")
