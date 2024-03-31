@@ -1,36 +1,38 @@
 #### Preamble ####
-# Purpose: Models information about songs from Spotify playlists
+# Purpose: Models information about songs from Billboard Year-End Hot 100
 # Author: Emily Su
 # Date: 2 April 2024
 # Contact: em.su@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: 00-install_packages.R, 01-download_data.R, 02-data_cleaning.R has been ran to install necessary packages.
+# Pre-requisites: 00-install_packages.R, 01-download_data.R, 02-data_cleaning.R, and
+# 03-test_data.R has been ran to install necessary packages, download raw data, and 
+# clean the data, and test the data, respectively.
 
 
 #### Workspace setup ####
 library(tidyverse)
 library(rstanarm)
+library(arrow)
+
+set.seed(646)
 
 #### Read data ####
-analysis_data <- read_csv("data/analysis_data/analysis_data.csv")
+analysis_data <- read_parquet("data/analysis_data/playlists_analysis_data.parquet")
 
 ### Model data ####
-first_model <-
+
+# Logistic regression model for hit song before 2020/pandemic
+hit_song_model <-
   stan_glm(
-    formula = flying_time ~ length + width,
+    formula = before_pandemic ~ track_duration_ms + loudness + tempo + (major + minor),
     data = analysis_data,
-    family = gaussian(),
+    family = binomial(link = "logit"),
     prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
     prior_intercept = normal(location = 0, scale = 2.5, autoscale = TRUE),
     prior_aux = exponential(rate = 1, autoscale = TRUE),
-    seed = 853
+    seed = 646
   )
 
 
 #### Save model ####
-saveRDS(
-  first_model,
-  file = "models/first_model.rds"
-)
-
-
+saveRDS(hit_song_model, file = "models/hit_song_model.rds")
