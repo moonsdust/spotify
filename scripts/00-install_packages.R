@@ -19,5 +19,6 @@ install.packages("arrow") # To allow Parquet files to be create
 install.packages("ggcorrplot") # For correlation matrix
 install.packages("testthat") # To test
 # For models
+install.packages("DiagrammeR")
 install.packages("rstanarm")
 install.packages("modelsummary")
