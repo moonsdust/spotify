@@ -24,7 +24,7 @@ analysis_data <- read_parquet("data/analysis_data/playlists_analysis_data.parque
 # Logistic regression model for hit song before 2020/pandemic
 hit_song_model <-
   stan_glm(
-    formula = before_pandemic ~ track_duration_ms + loudness + tempo + (major + minor),
+    formula = before_pandemic ~ track_duration_ms + loudness + tempo + mode_name,
     data = analysis_data,
     family = binomial(link = "logit"),
     prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
