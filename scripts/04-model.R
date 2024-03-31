@@ -33,6 +33,7 @@ hit_song_model <-
     seed = 646
   )
 
+prior_summary(hit_song_model)
 
 #### Save model ####
 saveRDS(hit_song_model, file = "models/hit_song_model.rds")
