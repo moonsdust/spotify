@@ -23,11 +23,11 @@ cleaned_data <-
   clean_names()
 
 # Select columns: playlist_name, track_name, track_album_name, 
-# track_duration_ms, energy, loudness, valence, mode_name, key_mode
+# track_duration_ms, tempo, loudness, mode_name, key_mode
 cleaned_data <- 
   cleaned_data |>
   select(playlist_name, track_name, track_album_name, 
-         track_duration_ms, energy, loudness, valence, mode_name, key_mode)
+         track_duration_ms, tempo, loudness, mode_name, key_mode)
 
 # Create hit_year, period, before_pandemic, major, and minor columns and remove playlist_name column
 cleaned_data <- 
@@ -85,7 +85,7 @@ cleaned_data <-
   ) |>
   select(
     hit_year, track_name, track_album_name, track_duration_ms, 
-    energy, loudness, valence, mode_name, key_mode, period, before_pandemic, 
+    tempo, loudness, mode_name, key_mode, period, before_pandemic, 
     major, minor
   ) 
 
@@ -94,7 +94,7 @@ cleaned_data <- distinct(cleaned_data)
 cleaned_data <- 
   cleaned_data |>
   select(
-    hit_year, track_duration_ms, energy, loudness, valence, 
+    hit_year, track_duration_ms, tempo, loudness, 
     mode_name, key_mode, period, before_pandemic, major, minor
   ) 
 
