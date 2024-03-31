@@ -1,14 +1,14 @@
 ---
 title: "My title"
 subtitle: "My subtitle if needed"
-author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
+author: Emily Su
+thanks: "Code and data are available at: https://github.com/moonsdust/top-songs."
 date: today
 date-format: long
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
-format: pdf
+format:
+  pdf:
+    toc: true
 number-sections: true
 bibliography: references.bib
 ---
@@ -19,66 +19,68 @@ bibliography: references.bib
 #| message: false
 
 library(tidyverse)
+library(arrow)
+library(ggcorrplot)
+library(ggplot2)
+library(knitr)
+library(DiagrammeR)
+
+# To be removed because this is from example
 library(palmerpenguins)
+analysis_data <- read_csv('../data/analysis_data/analysis_data.csv')
+
+# Read in data 
+playlist_analysis_data <- read_parquet("../data/analysis_data/playlists_analysis_data.parquet")
 ```
 
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
-
-The remainder of this paper is structured as follows. @sec-data....
-
-
+The estimand is the song characteristics from the Billboard Year-End Hot 100 singles such as its modality (major or minor), track duration, loudness, and tempo if a song was created before 2020 or during and after 2020.
 
 # Data {#sec-data}
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+## Variables of Interest
+
+## Data Source and Measurements
+
+## Methodology
+
+
+# Model {#sec-model}
+
 
 ```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
-
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
-```
-
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
-
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
+#| label: fig-causal-model
+#| fig-cap: Causal relationship between song characteristics and hit song (before 2020 or during and after 2020)
 #| echo: false
 #| warning: false
 #| message: false
 
-analysis_data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
-
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
+# Referenced https://www.erikigelstrom.com/articles/causal-graphs-in-r-with-diagrammer/
+grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    A [label = 'Hit song before 2020']
+    B [label = 'Modality']
+    C [label = 'Loudness']
+    D [label = 'Duration']
+    E [label = 'Tempo']
+  edge []
+    B->A
+    C->A
+    D->A
+    E->A
+  { rank = same; }
+}
+")
 ```
-
-Talk way more about it. 
-
-
-
-# Model
 
 The goal of our modelling strategy is twofold. Firstly,...
 
 Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
+
 
 ## Model set-up
 
@@ -103,7 +105,335 @@ We expect a positive relationship between the size of the wings and time spent a
 We can use maths by including latex between dollar signs, for instance $\theta$.
 
 
-# Results
+# Results {#sec-results}
+
+## Difference in song characteristics before 2020 (the pandemic) and during and after 2020 (the pandemic)
+
+### Scale and Modality
+```{r}
+#| label: fig-key-mode-bar
+#| fig-cap: Proportion of songs in different scales before 2020 versus during and after 2020
+#| echo: false
+#| warning: false
+#| message: false
+
+proportion_of_each_key_mode <- 
+  playlist_analysis_data |>
+  # Group by if song was a hit before or during and after the pandemic
+  group_by(period) |>
+  # Count each scale
+  count(key_mode) |>
+  # rename count column to num_of_key_mode
+  rename(
+    'num_of_key_mode' = n
+  ) |>
+  mutate( 
+    proportion_key_mode =  round(num_of_key_mode / sum(num_of_key_mode), 2)
+  ) 
+
+proportion_of_each_key_mode |> 
+  ggplot(mapping = aes(x = key_mode, y = proportion_key_mode)) +
+  facet_wrap(facets = vars(period), dir = "v") + 
+  geom_bar(stat="identity", binwidth = 3) +
+  theme_minimal() +
+  labs(x = "Scale",
+       y = "Proportion") + 
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+```{r}
+#| label: fig-mode-bar
+#| fig-cap: Proportion of songs whose modality is in a major or minor key before 2020 versus during and after 2020
+#| echo: false
+#| warning: false
+#| message: false
+
+proportion_of_each_mode <- 
+  playlist_analysis_data |>
+  # Group by if song was a hit before or during and after the pandemic
+  group_by(period) |>
+  # Count each scale
+  count(mode_name) |>
+  # rename count column to num_of_key_mode
+  rename(
+    'num_of_mode_name' = n
+  ) |>
+  mutate( 
+    proportion_mode_name =  round(num_of_mode_name / sum(num_of_mode_name), 2) 
+  ) 
+
+
+proportion_of_each_mode |> 
+  ggplot(mapping = aes(x = mode_name, y = proportion_mode_name)) +
+  facet_wrap(facets = vars(period), dir = "v") + 
+  geom_bar(stat = "identity", binwidth = 3) +
+  theme_minimal() +
+  labs(x = "Modality",
+       y = "Proportion") + 
+  theme(axis.text.x = element_text(angle = 90))
+```
+```{r}
+#| label: tbl-mode-table
+#| tbl-cap: Proportion of songs whose modality is in a major or minor key before 2020 versus during and after 2020
+#| echo: false
+#| warning: false
+#| message: false
+
+proportion_of_each_mode |> 
+  rename( 
+    "Period" = period,
+    "Modality" = mode_name,
+    "Count of each mode" = num_of_mode_name,
+    "Proportion of each mode" = proportion_mode_name
+    ) |>
+  kable()
+```
+
+### Track Duration Over the Years
+
+```{r}
+#| label: fig-track-duration-scatterplot
+#| fig-cap: Relationship between the hit year and track duration of a song 
+#| echo: false
+#| warning: false
+#| message: false
+
+playlist_analysis_data |> 
+  ggplot(aes(x = hit_year, y = track_duration_ms)) +
+  geom_smooth() +
+  geom_jitter() +  # So we can see all points
+  geom_point(alpha = 0.3) +
+  theme_minimal() +
+  labs(x = "Hit year",
+       y = "Duration of song (in ms)")
+```
+
+```{r}
+#| label: fig-track-duration-hist
+#| fig-cap: Distribution of track duration (in ms) before 2020 versus during and after 2020  
+#| echo: false
+#| warning: false
+#| message: false
+#| 
+playlist_analysis_data |> 
+  ggplot(mapping = aes(x = track_duration_ms)) +
+  facet_wrap(facets = vars(period), dir = "v") + 
+  geom_histogram(binwidth = 7000) +
+  theme_minimal() +
+  labs(x = "Duration of song (in ms)",
+       y = "Count")
+```
+
+```{r}
+#| label: fig-track-duration-boxplot
+#| fig-cap: Track duration (in ms) before 2020 versus during and after 2020  
+#| echo: false
+#| warning: false
+#| message: false
+
+playlist_analysis_data |> 
+  ggplot(mapping = aes(x = track_duration_ms)) +
+  facet_wrap(facets = vars(period), dir = "v") + 
+  geom_boxplot() +
+  theme_minimal() +
+  labs(x = "Duration of song (in ms)",
+       y = "Count")
+```
+
+```{r}
+#| label: tbl-track-duration-stats-before
+#| tbl-cap: Minimum, quartiles, median, and maximum of track duration (in ms) before 2020
+#| echo: false
+#| warning: false
+#| message: false
+
+playlist_analysis_data |> 
+  # Filter for "Before Pandemic"
+  filter(period == "Before Pandemic") |>
+  # Choose track_duration_ms
+  select(track_duration_ms) |>
+  # Rename columns
+  rename (
+    "Duration of song (in ms)"= track_duration_ms
+  ) |>
+  summary() |>
+  kable()
+```
+```{r}
+#| label: tbl-track-duration-stats-during-after
+#| tbl-cap: Minimum, quartiles, median, and maximum of track duration (in ms) during and after 2020
+#| echo: false
+#| warning: false
+#| message: false
+
+playlist_analysis_data |> 
+  # Filter for During and After Pandemic
+  filter(period == "During and After Pandemic") |>
+  # Choose track_duration_ms
+  select(track_duration_ms) |>
+  # Rename columns
+  rename (
+    "Duration of song (in ms)"= track_duration_ms
+  ) |>
+  summary() |>
+  kable()
+```
+
+### Loudness
+
+```{r}
+#| label: fig-loudness-scatterplot
+#| fig-cap: Relationship between the hit year and loudness of a song 
+#| echo: false
+#| warning: false
+#| message: false
+
+playlist_analysis_data |> 
+  ggplot(aes(x = hit_year, y = loudness)) +
+  geom_smooth() +
+  geom_jitter() +  # So we can see all points
+  geom_point(alpha = 0.3) +
+  theme_minimal() +
+  labs(x = "Hit year",
+       y = "Loudness of song (in dB)")
+```
+```{r}
+#| label: fig-loudness-hist
+#| fig-cap: Distribution of loudness (in dB) before 2020 versus during and after 2020  
+#| echo: false
+#| warning: false
+#| message: false
+#| 
+playlist_analysis_data |> 
+  ggplot(mapping = aes(x = loudness)) +
+  facet_wrap(facets = vars(period), dir = "v") + 
+  geom_histogram(binwidth = 0.3) +
+  theme_minimal() +
+  labs(x = "Loudness of song (in dB)",
+       y = "Count")
+```
+
+```{r}
+#| label: tbl-loudness-stats-before
+#| tbl-cap: Minimum, quartiles, median, and maximum of loudness of song (in dB) before 2020
+#| echo: false
+#| warning: false
+#| message: false
+
+playlist_analysis_data |> 
+  # Filter for "Before Pandemic"
+  filter(period == "Before Pandemic") |>
+  # Choose loudness
+  select(loudness) |>
+  # Rename columns
+  rename (
+    "Loudness of song (in dB)"= loudness
+  ) |>
+  summary() |>
+  kable()
+```
+
+```{r}
+#| label: tbl-loudness-stats-during-after
+#| tbl-cap: Minimum, quartiles, median, and maximum of loudness of song (in dB) during and after 2020
+#| echo: false
+#| warning: false
+#| message: false
+
+playlist_analysis_data |> 
+  # Filter for "During and After Pandemic"
+  filter(period == "During and After Pandemic") |>
+  # Choose loudness
+  select(loudness) |>
+  # Rename columns
+  rename (
+    "Loudness of song (in dB)"= loudness
+  ) |>
+  summary() |>
+  kable()
+```
+
+
+
+### Tempo
+
+```{r}
+#| label: fig-tempo-scatterplot
+#| fig-cap: Relationship between the hit year and tempo of a song 
+#| echo: false
+#| warning: false
+#| message: false
+
+playlist_analysis_data |> 
+  ggplot(aes(x = hit_year, y = tempo)) +
+  geom_smooth() +
+  geom_jitter() +  # So we can see all points
+  geom_point(alpha = 0.3) +
+  theme_minimal() +
+  labs(x = "Hit year",
+       y = "Tempo of song (BPM)")
+```
+
+```{r}
+#| label: fig-tempo-hist
+#| fig-cap: Distribution of tempo (BPM) before 2020 versus during and after 2020  
+#| echo: false
+#| warning: false
+#| message: false
+
+playlist_analysis_data |> 
+  ggplot(mapping = aes(x = tempo)) +
+  facet_wrap(facets = vars(period), dir = "v") + 
+  geom_histogram(binwidth = 3) +
+  theme_minimal() +
+  labs(x = "Tempo of song (BPM)",
+       y = "Count")
+```
+
+```{r}
+#| label: tbl-tempo-stats-before
+#| tbl-cap: Minimum, quartiles, median, and maximum of tempo of a song (BPM) before 2020
+#| echo: false
+#| warning: false
+#| message: false
+
+playlist_analysis_data |> 
+  # Filter for "Before Pandemic"
+  filter(period == "Before Pandemic") |>
+  # Choose tempo
+  select(tempo) |>
+  # Rename columns
+  rename (
+    "Tempo of song (BPM)"= tempo
+  ) |>
+  summary() |>
+  kable()
+```
+
+```{r}
+#| label: tbl-tempo-stats-during-after
+#| tbl-cap: Minimum, quartiles, median, and maximum of tempo of a song (BPM) during and after 2020
+#| echo: false
+#| warning: false
+#| message: false
+
+playlist_analysis_data |> 
+  # Filter for "During and After Pandemic"
+  filter(period == "During and After Pandemic") |>
+  # Choose tempo
+  select(tempo) |>
+  # Rename columns
+  rename (
+    "Tempo of song (BPM)"= tempo
+  ) |>
+  summary() |>
+  kable()
+```
+
+
+
+
+## Model Results
 
 Our results are summarized in @tbl-modelresults.
 
@@ -116,7 +446,7 @@ Our results are summarized in @tbl-modelresults.
 library(rstanarm)
 
 first_model <-
-  readRDS(file = here::here("models/first_model.rds"))
+  readRDS(file = "../models/first_model.rds")
 ```
 
 ```{r}
@@ -158,8 +488,26 @@ Weaknesses and next steps should also be included.
 
 # Appendix {-}
 
+## Additional Figures and Tables 
 
-# Additional data details
+```{r}
+#| label: fig-correlation-matrix
+#| fig-cap: Correlation between numerical characteristics of songs from Billboard Year-End Hot 100 single and if song was a hit before 2020/pandemic
+#| echo: false
+#| warning: false
+#| message: false
+
+# Referenced https://rpubs.com/Alema/1000474
+numeric_playlist_analysis_data <- 
+  playlist_analysis_data |>
+  select(-c(mode_name, key_mode, period, hit_year))
+
+ggcorrplot(cor(numeric_playlist_analysis_data), 
+           hc.order = TRUE,
+           outline.color = "white", lab = TRUE, legend.title = "Correlation") 
+```
+
+
 
 # Model details {#sec-model-details}
 
