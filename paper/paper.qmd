@@ -42,13 +42,34 @@ playlist_analysis_data <- read_parquet("../data/analysis_data/playlists_analysis
 
 # Introduction
 
+1) broader context to motivate; 2) some detail about what the paper is about; 3) a clear gap that needs to be filled; 4) what was done; 5) what was found; 6) why it is important; 7) the structure of the paper. 
+
+
+
+Ghaffari et al noted that other studies have found that people used music as a way to cope and regulate their thoughts and emotions during the COVID-19 pandemic and the lockdowns that came with it [@citecoping]. This finding is similar to how music therapy works. As defined by Canadian Association of Music Therapists, music therapy is the use of music to support an individual's health, social development, and well-being and some of the techniques used includes listening to music [@citemusictherapy]. 
+
+
+Hurwitz and Krumhansl conducted a study into how people's listening habits over the course of the pandemic and they found that the songs they listened to often is linked to an emotion such as sadness and/or invokes memories from the past [@citeshiftingniches].
+
+
+
+During the COVID-19 pandemic, TikTok grew in popularity alongside shortform videos for different types of content. With this, viral songs on TikTok were met with thousands of listens on streaming platforms such as Spotify and sometimes go onto being on lists like the Billboard Year-End Hot 100. 
+
+
+Music reflects the climate of society. 
+
+
+However this raises the following question: how are top songs prior to 2020 different from the top songs during and after 2020? To investigate this question, we looked at their music characteristics such as its modality (major or minor key), track duration, loudness, and tempo. 
+
 
 The estimand is the song characteristics from the Billboard Year-End Hot 100 singles such as its modality (major or minor), track duration, loudness, and tempo if a song was created before 2020 or during and after 2020.
 
 
 
-
-
+Importance: 
+- Being cognizant of music that is popular can help 
+- Can help us figure out the overall feelings of society in today's climate after the pandemic.
+- Results from this paper can help improve music therapy. 
 
 
 # Data {#sec-data}
@@ -74,18 +95,28 @@ testthat [@citetestthat]. The packages that were used for the model-related sect
 # https://stackoverflow.com/questions/42737645/how-to-export-images-of-diagrammer-in-r
 causal_model <- "digraph {
   graph []
+  # Nodes 
   node [shape = plaintext]
     A [label = 'Hit song before 2020 or during and after 2020']
     B [label = 'Modality']
     C [label = 'Loudness']
     D [label = 'Duration']
     E [label = 'Tempo']
+    F [label = 'Lyrics (Confounder)']
+  # Edges for non-confounding variables
   edge []
     B->A
     C->A
     D->A
     E->A
-  { rank = same; }
+{ rank = same; }
+  # Edges for confounding variable
+  edge [style = dashed]
+    F -> B
+    F -> C
+    F -> D
+    F -> E
+    F -> A
 }"
 
 exporting_image <- grViz(causal_model) |>
@@ -98,7 +129,7 @@ exporting_image <- grViz(causal_model) |>
 # Referenced https://stackoverflow.com/questions/23861000/displaying-images-in-r-in-version-3-1-0
 the_image <- readPNG("casual_model.png")
 plot.new()
-rasterImage(the_image, 0, 0, 0.9, 0.9)
+rasterImage(the_image, 0, 0, 1, 1)
 ```
 
 The goal of our modelling strategy is twofold. Firstly,...
