@@ -126,7 +126,7 @@ exporting_image <- grViz(causal_model) |>
 # Referenced https://stackoverflow.com/questions/23861000/displaying-images-in-r-in-version-3-1-0
 the_image <- readPNG("casual_model.png")
 plot.new()
-rasterImage(the_image, 0, 0, 0.7, 1)
+rasterImage(the_image, 0, 0, 0.9, 1.13)
 ```
 
 The goal of our modelling strategy is twofold. Firstly,...
