@@ -42,32 +42,11 @@ playlist_analysis_data <- read_parquet("../data/analysis_data/playlists_analysis
 
 # Introduction
 
+During the COVID-19 pandemic, viral songs on social media sites such as TikTok were met with thousands of listens on streaming platforms such as Spotify and sometimes go onto being on lists like the Billboard Year-End Hot 100. These songs often accompany thousands of short clips of people talking about their life, challenges, etc. Ghaffari et al noted that other studies have found that people used music as a way to cope and regulate their thoughts and emotions during the pandemic and the lockdowns that came with it [@citecoping]. We can see this translated through the shortform videos where users don't talk and instead have the song play out to convey how they are feeling or thinking. Ghaffari et al's findings is similar to how music therapy works. As defined by Canadian Association of Music Therapists, music therapy is the use of music to support an individual's health, social development, and well-being and some of the techniques used includes listening to music [@citemusictherapy]. Hurwitz and Krumhansl conducted a study into how people's listening habits over the course of the pandemic and they found that the songs they listened to often is linked to an emotion such as sadness and/or invokes memories from the past [@citeshiftingniches]. However this raises the following question, which we explored in our analysis: how are top songs prior to 2020 or the start of the pandemic different from the top songs during and after 2020?
 
-Ghaffari et al noted that other studies have found that people used music as a way to cope and regulate their thoughts and emotions during the COVID-19 pandemic and the lockdowns that came with it [@citecoping]. This finding is similar to how music therapy works. As defined by Canadian Association of Music Therapists, music therapy is the use of music to support an individual's health, social development, and well-being and some of the techniques used includes listening to music [@citemusictherapy]. 
+In this paper, to investigate patterns and trends in music, we analyzed data from Billboard Year-End Hot 100 singles list from 2014 to 2023 on music characteristics such as its modality (major or minor key), track duration, loudness, and tempo. Our estimand is the song characteristics from the Billboard Year-End Hot 100 singles such as its modality (major or minor), track duration, loudness, and tempo if a song was created before 2020 or during and after 2020. The list allowed us to gauge how preference in music characteristics has changed overall during and after the pandemic. Current studies gives us a sense on how currently people are feeling based on surveys done. However, there is currently a lack of understanding and focus on the difference in musical characteristics of popular songs with the general population before the pandemic and during and after it. We found that ......[add in stuff]. Music can reflect the climate of society and being cognizant of the trends in music characteristics found in hit songs can help provide insight on the overall feelings of society in today's climate during and after the pandemic as well as before it. This can aid in improving therapeutic treatments such as music therapy.
 
-
-Hurwitz and Krumhansl conducted a study into how people's listening habits over the course of the pandemic and they found that the songs they listened to often is linked to an emotion such as sadness and/or invokes memories from the past [@citeshiftingniches].
-
-
-
-During the COVID-19 pandemic, TikTok grew in popularity alongside shortform videos for different types of content. With this, viral songs on TikTok were met with thousands of listens on streaming platforms such as Spotify and sometimes go onto being on lists like the Billboard Year-End Hot 100. 
-
-
-Music reflects the climate of society. 
-
-
-However this raises the following question: how are top songs prior to 2020 different from the top songs during and after 2020? To investigate this question, we looked at their music characteristics such as its modality (major or minor key), track duration, loudness, and tempo. 
-
-
-The estimand is the song characteristics from the Billboard Year-End Hot 100 singles such as its modality (major or minor), track duration, loudness, and tempo if a song was created before 2020 or during and after 2020.
-
-
-
-Importance: 
-- Being cognizant of music that is popular can help 
-- Can help us figure out the overall feelings of society in today's climate after the pandemic.
-- Results from this paper can help improve music therapy. 
-
+In the rest of this paper, the data section [@sec-data] will cover the dataset used, how it was obtained, define our variables of interests that are used by our tables and graphs, and briefly explain the data cleaning process. In the model section [@sec-model], it will explain go over our proposed causal model, which would explain potential relationships in our data, the setup of our model to understand these relationships, and justification for our model. In the results section [@sec-results], we will reveal tables and graphs made on our datasets, explain what they show, and show our results from our model. In the discussion section [@sec-discussion], we will connect back to the real world and explain what the results could mean, the implications of our results, potential areas of improvement for the paper, and suggestions for future works. Finally, the appendix section [@sec-appendix] will extra tables and graphs from our results as well, additional information about the model, and a link to a Shiny app featuring an interactive graph of some of the results. 
 
 # Data {#sec-data}
 
@@ -81,7 +60,7 @@ testthat [@citetestthat]. The packages that were used for the model-related sect
 
 # Model {#sec-model}
 
-```{r}
+```{r, out.width="50%"}
 #| label: fig-causal-model
 #| fig-cap: Causal relationship between song characteristics and hit song (before 2020 or during and after 2020)
 #| echo: false
@@ -126,7 +105,7 @@ exporting_image <- grViz(causal_model) |>
 # Referenced https://stackoverflow.com/questions/23861000/displaying-images-in-r-in-version-3-1-0
 the_image <- readPNG("casual_model.png")
 plot.new()
-rasterImage(the_image, 0, 0, 0.9, 1.13)
+rasterImage(the_image, 0, 0, 0.8, 1.13)
 ```
 
 The goal of our modelling strategy is twofold. Firstly,...
@@ -524,7 +503,7 @@ modelsummary::modelsummary(
 
 
 
-# Discussion
+# Discussion {#sec-discussion}
 
 ## First discussion point {#sec-first-point}
 
@@ -542,7 +521,7 @@ Weaknesses and next steps should also be included.
 
 \appendix
 
-# Appendix {-}
+# Appendix {#sec-appendix}
 
 ## Additional Figures and Tables 
 
@@ -564,9 +543,9 @@ ggcorrplot(cor(numeric_playlist_analysis_data),
 ```
 
 
-# Model details {#sec-model-details}
+## Model details {#sec-model-details}
 
-## Posterior predictive check
+### Posterior predictive check
 
 In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
 
@@ -593,7 +572,7 @@ posterior_vs_prior(first_model) +
   coord_flip()
 ```
 
-## Diagnostics
+### Diagnostics
 
 @fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
 
