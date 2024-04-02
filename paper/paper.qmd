@@ -5,7 +5,7 @@ author: Emily Su
 thanks: "Code and data are available at: https://github.com/moonsdust/top-songs."
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "Music often reflects the current climate of society and there is a growing interest in how hit songs as seen on Billboard's Year-End Hot 100 singles has changed after the COVID-19 pandemic. This paper looks at music characteristics such as tempo, song duration, loudness, and modality of songs from Billboard's Year-End Hot 100 singles list from 2014 to 2023 to reveal patterns and relationships to explain the difference between top songs before 2020 and 2020 onwards. The results show that hit songs from 2020 onwards had become on average shorter, quieter, but slightly faster with the melody of songs being in a major key. These results can support the evaluation of the current emotional state of different populations and improve treatments such as music therapy, however further investigation is needed on the influence of lyrics on different music characteristics."
 format:
   pdf:
     toc: true
@@ -42,11 +42,11 @@ playlist_analysis_data <- read_parquet("../data/analysis_data/playlists_analysis
 
 # Introduction
 
-During the COVID-19 pandemic, viral songs on social media sites such as TikTok were met with thousands of listens on streaming platforms such as Spotify and sometimes go onto being on lists like the Billboard Year-End Hot 100. These songs often accompany thousands of short clips of people talking about their life, challenges, etc. Ghaffari et al noted that other studies have found that people used music as a way to cope and regulate their thoughts and emotions during the pandemic and the lockdowns that came with it [@citecoping]. We can see this translated through the shortform videos where users don't talk and instead have the song play out to convey how they are feeling or thinking. Ghaffari et al's findings is similar to how music therapy works. As defined by Canadian Association of Music Therapists, music therapy is the use of music to support an individual's health, social development, and well-being and some of the techniques used includes listening to music [@citemusictherapy]. Hurwitz and Krumhansl conducted a study into how people's listening habits over the course of the pandemic and they found that the songs they listened to often is linked to an emotion such as sadness and/or invokes memories from the past [@citeshiftingniches]. However this raises the following question, which we explored in our analysis: how are top songs prior to 2020 or the start of the pandemic different from the top songs during and after 2020?
+During the COVID-19 pandemic, viral songs on social media sites such as TikTok were met with thousands of listens on streaming platforms such as Spotify and at times go onto being on lists like the Billboard Year-End Hot 100. These songs often accompany thousands of short clips of people talking about their lives, challenges, etc. Ghaffari et al noted that other studies have found that people used music as a way to cope and regulate their thoughts and emotions during the pandemic and the lockdowns that came with it [@citecoping]. We can see this translated through the short-form videos where users don't talk and instead have the song play out to convey how they are feeling or thinking. Ghaffari et al's findings are similar to how music therapy works. As defined by the Canadian Association of Music Therapists, music therapy is the use of music to support an individual's health, social development, and well-being and some of the techniques used include listening to music [@citemusictherapy]. Hurwitz and Krumhansl conducted a study into how people's listening habits throughout the pandemic and they found that the songs they listened to often were linked to an emotion such as sadness and/or invoking memories from the past [@citeshiftingniches]. However, this raises the following question, which we explored in our analysis: how are top songs prior to 2020 or the start of the pandemic different from the top songs during and after 2020?
 
-In this paper, to investigate patterns and trends in music, we analyzed data from Billboard Year-End Hot 100 singles list from 2014 to 2023 on music characteristics such as its modality (major or minor key), track duration, loudness, and tempo. Our estimand is the song characteristics from the Billboard Year-End Hot 100 singles such as its modality (major or minor), track duration, loudness, and tempo if a song was created before 2020 or during and after 2020. The list allowed us to gauge how preference in music characteristics has changed overall during and after the pandemic. Current studies gives us a sense on how currently people are feeling based on surveys done. However, there is currently a lack of understanding and focus on the difference in musical characteristics of popular songs with the general population before the pandemic and during and after it. We found that ......[add in stuff]. Music can reflect the climate of society and being cognizant of the trends in music characteristics found in hit songs can help provide insight on the overall feelings of society in today's climate during and after the pandemic as well as before it. This can aid in improving therapeutic treatments such as music therapy.
+In this paper, to investigate patterns and trends in music, we analyzed data from the Billboard Year-End Hot 100 singles list from 2014 to 2023 on music characteristics such as its modality (major or minor key), track duration, loudness, and tempo. Our estimand is the song characteristics from the Billboard Year-End Hot 100 singles such as its modality (major or minor), track duration, loudness, and tempo if a song was created before 2020 or during and after 2020. The list allowed us to gauge how preference in music characteristics has changed overall during and after the pandemic. Current studies give us a sense of how currently people are feeling based on surveys done. However, there is currently a lack of understanding and focus on the difference in musical characteristics of popular songs with the general population before the pandemic and during and after it. In our findings, our data showed that songs in a major key made up the majority of top songs before, during, and after 2020 and top songs were on average quieter, shorter, and had slightly faster tempos during and after 2020. Music can reflect the climate of society and understanding trends in music characteristics of hit songs can help provide insight on the overall feelings of different populations during and after the pandemic as well as before it. This can aid in improving treatments such as music therapy.
 
-In the rest of this paper, the data section [@sec-data] will cover the dataset used, how it was obtained, define our variables of interests that are used by our tables and graphs, and briefly explain the data cleaning process. In the model section [@sec-model], it will explain go over our proposed causal model, which would explain potential relationships in our data, the setup of our model to understand these relationships, and justification for our model. In the results section [@sec-results], we will reveal tables and graphs made on our datasets, explain what they show, and show our results from our model. In the discussion section [@sec-discussion], we will connect back to the real world and explain what the results could mean, the implications of our results, potential areas of improvement for the paper, and suggestions for future works. Finally, the appendix section [@sec-appendix] will extra tables and graphs from our results as well, additional information about the model, and a link to a Shiny app featuring an interactive graph of some of the results. 
+In the rest of this paper, the data section (@sec-data) will cover the dataset used, how it was obtained, define the variables of interest that are used by our tables and graphs, and briefly explain the data cleaning process. The model section (@sec-model) will explain our proposed causal model, which would explain potential relationships in our data, the setup of our model to understand these relationships, and justification for our model. In the results section (@sec-results), we will reveal tables and graphs made on our datasets, explain what they show, and show our results from our model. In the discussion section (@sec-discussion), we will connect back to the real world and explain what the results could mean, the implications of our results, potential areas of improvement for the paper, and suggestions for future works. Finally, the appendix section (@sec-appendix) will extra tables and graphs from our results as well, as additional information about the model, and a link to a Shiny application featuring an interactive graph of some of the results. 
 
 # Data {#sec-data}
 
@@ -55,12 +55,11 @@ In the rest of this paper, the data section [@sec-data] will cover the dataset u
 ## Data Source and Measurements
 
 ## Methodology
-The datasets used in this paper were retrieved, simulated, cleaned, analyzed, and tested using the R programming language [@citeR], tidyverse [@citetidyverse], knitr [@citeknitr], janitor [@citejanitor], dplyr [@citedplyr], ggplot2 [@citeggplot2], spotifyr [@citespotifyr], usethis [@citeusethis], arrow [@citearrow], ggcorrplot [@citeggcorrplot],
-testthat [@citetestthat]. The packages that were used for the model-related sections or used for the model itself are DiagrammeR [@citeDiagrammeR], rsvg [@citersvg], magrittr [@citemagrittr], DiagrammeRsvg [@citeDiagrammeRsvg], png [@citepng], rstanarm [@citerstanarm], and modelsummary [@citemodelsummary]. 
+The dataset used in this paper was retrieved, simulated, cleaned, analyzed, and tested using the R programming language [@citeR], tidyverse [@citetidyverse], knitr [@citeknitr], janitor [@citejanitor], dplyr [@citedplyr], ggplot2 [@citeggplot2], spotifyr [@citespotifyr], usethis [@citeusethis], arrow [@citearrow], ggcorrplot [@citeggcorrplot], testthat [@citetestthat]. The packages that were used for the model-related sections or used for the model itself are DiagrammeR [@citeDiagrammeR], rsvg [@citersvg], magrittr [@citemagrittr], DiagrammeRsvg [@citeDiagrammeRsvg], png [@citepng], rstanarm [@citerstanarm], and modelsummary [@citemodelsummary]. 
 
 # Model {#sec-model}
 
-```{r, out.width="50%"}
+```{r}
 #| label: fig-causal-model
 #| fig-cap: Causal relationship between song characteristics and hit song (before 2020 or during and after 2020)
 #| echo: false
@@ -112,21 +111,25 @@ The goal of our modelling strategy is twofold. Firstly,...
 
 Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
 
+We are interested in investigating if a song is likely to be a top song prior to 2020 or not based on what we know about the duration, loudness, tempo, and modality of a top song. 
 
 ## Model set-up
 
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
+We will define our logistic regression model as follows. 
 
 \begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
+y_i|\pi_i &\sim \mbox{Bern}(\pi_i) \\
+\mbox{logit}(\pi_i) &= \beta_0 + \beta_1 \times \mbox{duration}_i + \beta_2 \times \mbox{loudness}_i + \beta_3 \times \mbox{tempo}_i + \beta_4 \times \mbox{modality}_i\\
+\beta_0 &\sim \mbox{Normal}(0, 2.5) \\
+\beta_1 &\sim \mbox{Normal}(0, 2.5) \\
+\beta_2 &\sim \mbox{Normal}(0, 2.5) \\
+\beta_3 &\sim \mbox{Normal}(0, 2.5) \\
+\beta_4 &\sim \mbox{Normal}(0, 2.5) \\
 \end{align}
 
-We run the model in R [@citeR] using the `rstanarm` package of @citerstanarm. We use the default priors from `rstanarm`.
+We define $y_i$ to be a top song, which if it is 1 represents a top song prior to 2020 and 0 if it is a top song from 2020 onwards. $\pi_i$ is the probability that a top song $i$ is a top song prior to 2020. Let $\mbox{duration}_i$ be the duration of the top song in milliseconds (ms) and $\mbox{loudness}_i$ to be the mean loudness of a top song in decibels (dB). Set $\mbox{tempo}_i$ to be the mean beats per minutes (BPM) of a top song and $\mbox{modality}_i$ to be the modality of the top song, where 1 means the melody of the song is in a minor key and 0 if it is in a major key. 
+
+We ran the model in R [@citeR] using the rstanarm package of @citerstanarm and we used the default priors from rstanarm.
 
 
 ### Model justification
