@@ -470,14 +470,8 @@ playlist_analysis_data |>
 
 
 # Discussion {#sec-discussion}
+
 [To Do]
-## First discussion point {#sec-first-point}
-
-## Second discussion point
-
-## Third discussion point
-
-## Weaknesses and next steps
 
 \newpage
 
