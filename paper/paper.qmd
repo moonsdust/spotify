@@ -5,7 +5,7 @@ author: Emily Su
 thanks: "Code and data are available at: https://github.com/moonsdust/top-songs."
 date: today
 date-format: long
-abstract: "Music often reflects the current climate of society and there is a growing interest in how hit songs as seen on Billboard's Year-End Hot 100 singles has changed after the COVID-19 pandemic. This paper looks at music characteristics such as tempo, song duration, loudness, and modality of songs from Billboard's Year-End Hot 100 singles list from 2014 to 2023 to reveal patterns and relationships to explain the difference between top songs before 2020 and 2020 onwards. The results show that hit songs from 2020 onwards had become on average shorter, quieter, but slightly faster with the melody of songs being in a major key. These results can support the evaluation of the current emotional state of different populations and improve treatments such as music therapy, however further investigation is needed on the influence of lyrics on different music characteristics."
+abstract: "Music often reflects the current climate of society and there is a growing interest in how hit songs as seen on Billboard's Year-End Hot 100 singles has changed after the COVID-19 pandemic. This paper looks at music characteristics such as tempo, song duration, loudness, and modality of songs from Billboard's Year-End Hot 100 singles list from 2014 to 2023 to reveal patterns and relationships to explain the difference between top songs before 2020 and 2020 onwards. The results show that hit songs from 2020 onwards had become on average shorter, quieter, but slightly faster with the melody of songs being in a major key. These results can support the evaluation of the emotional state of different populations and improve treatments such as music therapy, however further investigation is needed on the influence of lyrics on different music characteristics."
 format:
   pdf:
     toc: true
@@ -31,10 +31,6 @@ library(magrittr)
 library(DiagrammeRsvg)
 library(png)
 
-# To be removed because this is from example
-library(palmerpenguins)
-analysis_data <- read_csv('../data/analysis_data/analysis_data.csv')
-
 # Read in data 
 playlist_analysis_data <- read_parquet("../data/analysis_data/playlists_analysis_data.parquet")
 ```
@@ -48,7 +44,9 @@ In this paper, to investigate patterns and trends in music, we analyzed data fro
 
 In the rest of this paper, the data section (@sec-data) will cover the dataset used, how it was obtained, define the variables of interest that are used by our tables and graphs, and briefly explain the data cleaning process. The model section (@sec-model) will explain our proposed causal model, which would explain potential relationships in our data, the setup of our model to understand these relationships, and justification for our model. In the results section (@sec-results), we will reveal tables and graphs made on our datasets, explain what they show, and show our results from our model. In the discussion section (@sec-discussion), we will connect back to the real world and explain what the results could mean, the implications of our results, potential areas of improvement for the paper, and suggestions for future works. Finally, the appendix section (@sec-appendix) will extra tables and graphs from our results as well, as additional information about the model, and a link to a Shiny application featuring an interactive graph of some of the results. 
 
+
 # Data {#sec-data}
+[To Do]
 
 ## Variables of Interest
 
@@ -107,9 +105,7 @@ plot.new()
 rasterImage(the_image, 0, 0, 0.8, 1.13)
 ```
 
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
+[To Do]
 
 We are interested in investigating if a song is likely to be a top song prior to 2020 or not based on what we know about the duration, loudness, tempo, and modality of a top song. 
 
@@ -129,17 +125,15 @@ y_i|\pi_i &\sim \mbox{Bern}(\pi_i) \\
 
 We define $y_i$ to be a top song, which if it is 1 represents a top song prior to 2020 and 0 if it is a top song from 2020 onwards. $\pi_i$ is the probability that a top song $i$ is a top song prior to 2020. Let $\mbox{duration}_i$ be the duration of the top song in milliseconds (ms) and $\mbox{loudness}_i$ to be the mean loudness of a top song in decibels (dB). Set $\mbox{tempo}_i$ to be the mean beats per minutes (BPM) of a top song and $\mbox{modality}_i$ to be the modality of the top song, where 1 means the melody of the song is in a minor key and 0 if it is in a major key. 
 
-We ran the model in R [@citeR] using the rstanarm package of @citerstanarm and we used the default priors from rstanarm.
+We ran the model using the rstanarm package of @citerstanarm and we used the default priors from rstanarm.
 
 
 ### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
+[To Do]
 
 
 # Results {#sec-results}
+[To Finish]
 
 ## Difference in song characteristics before 2020 (the pandemic) and during and after 2020 (the pandemic) of songs from the Billboard Year-End Hot 100 singles 
 
@@ -472,53 +466,18 @@ playlist_analysis_data |>
 
 
 ## Model Results
-
-Our results are summarized in @tbl-modelresults.
-
-```{r}
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
-
-library(rstanarm)
-
-first_model <-
-  readRDS(file = "../models/first_model.rds")
-```
-
-```{r}
-#| echo: false
-#| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
-#| warning: false
-
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
-)
-```
-
-
+[To Do]
 
 
 # Discussion {#sec-discussion}
-
+[To Do]
 ## First discussion point {#sec-first-point}
-
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
 
 ## Second discussion point
 
 ## Third discussion point
 
 ## Weaknesses and next steps
-
-Weaknesses and next steps should also be included.
 
 \newpage
 
@@ -547,55 +506,11 @@ ggcorrplot(cor(numeric_playlist_analysis_data),
 
 
 ## Model details {#sec-model-details}
+[To Do]
 
 ### Posterior predictive check
 
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
-
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
-
-```{r}
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
-
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-posterior_vs_prior(first_model) +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
-```
-
 ### Diagnostics
-
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
-
-```{r}
-#| echo: false
-#| eval: true
-#| message: false
-#| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
-
-plot(first_model, "trace")
-
-plot(first_model, "rhat")
-```
-
 
 
 \newpage
