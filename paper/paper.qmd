@@ -95,12 +95,12 @@ causal_model <- "digraph {
 exporting_image <- grViz(causal_model) |>
   export_svg() |>
   charToRaw() |>
-  rsvg_png("casual_model.png", width = 1000)
+  rsvg_png("../other/sketches/graph_2_casual_model.png", width = 1000)
 
 # NOTE: Had to save diagram and read it in as a image since grViz can be only render in HTML and 
 # not in PDFs 
 # Referenced https://stackoverflow.com/questions/23861000/displaying-images-in-r-in-version-3-1-0
-the_image <- readPNG("casual_model.png")
+the_image <- readPNG("../other/sketches/graph_2_casual_model.png")
 plot.new()
 rasterImage(the_image, 0, 0, 0.8, 1.13)
 ```
