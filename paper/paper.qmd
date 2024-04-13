@@ -227,7 +227,7 @@ proportion_of_each_mode |>
     ) |>
   kable()
 ```
-\newpage
+
 
 ### Track Duration
 
@@ -319,7 +319,7 @@ playlist_analysis_data |>
   kable()
 ```
 
-\newpage
+
 
 ### Loudness
 
@@ -396,8 +396,6 @@ playlist_analysis_data |>
 ```
 
 
-\newpage
-
 ### Tempo
 
 ```{r}
@@ -473,7 +471,6 @@ playlist_analysis_data |>
   kable()
 ```
 
-\newpage
 
 
 ## Model Results
