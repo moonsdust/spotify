@@ -131,7 +131,7 @@ We are interested in investigating if a song is likely to be a top song prior to
 
 We will define our logistic regression model as follows. 
 
-\begin{align} 
+\begin{align*} 
 y_i|\pi_i &\sim \mbox{Bern}(\pi_i) \\
 \mbox{logit}(\pi_i) &= \beta_0 + \beta_1 \times \mbox{duration}_i + \beta_2 \times \mbox{loudness}_i + \beta_3 \times \mbox{tempo}_i + \beta_4 \times \mbox{modality}_i\\
 \beta_0 &\sim \mbox{Normal}(0, 2.5) \\
@@ -139,7 +139,7 @@ y_i|\pi_i &\sim \mbox{Bern}(\pi_i) \\
 \beta_2 &\sim \mbox{Normal}(0, 2.5) \\
 \beta_3 &\sim \mbox{Normal}(0, 2.5) \\
 \beta_4 &\sim \mbox{Normal}(0, 2.5) \\
-\end{align}
+\end{align*}
 
 We define $y_i$ to be a top song, which if it is 1 represents a top song prior to 2020 and 0 if it is a top song from 2020 onwards. $\pi_i$ is the probability that a top song $i$ is a top song prior to 2020. Let $\mbox{duration}_i$ be the duration of the top song in milliseconds (ms) and $\mbox{loudness}_i$ to be the mean loudness of a top song in decibels (dB). Set $\mbox{tempo}_i$ to be the mean beats per minutes (BPM) of a top song and $\mbox{modality}_i$ to be the modality of the top song, where 1 means the melody of the song is in a minor key and 0 if it is in a major key. 
 
