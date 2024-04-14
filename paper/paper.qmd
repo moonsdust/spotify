@@ -23,6 +23,7 @@ library(arrow)
 library(ggcorrplot)
 library(ggplot2)
 library(knitr)
+library(modelsummary)
 
 # Packages related to causal model created
 library(DiagrammeR)
@@ -33,6 +34,9 @@ library(png)
 
 # Read in data 
 playlist_analysis_data <- read_parquet("../data/analysis_data/playlists_analysis_data.parquet")
+
+hit_song_model_results <- readRDS("../models/hit_song_model.rds")
+  
 ```
 
 
@@ -476,6 +480,28 @@ playlist_analysis_data |>
 ## Model Results
 [To Do]
 
+```{r}
+#| label: tbl-model-result
+#| tbl-cap: How likely a hit song is a hit before 2020 / the pandemic based on its tempo, song duration, loudness, and modality
+#| echo: false
+#| warning: false
+#| message: false
+
+modelsummary(
+  list("A hit song before 2020" = hit_song_model_results),
+  statistic = "mad"
+)
+```
+```{r}
+#| label: fig-model-result-ci
+#| fig-cap: The credible intervals for predictors of a hit song before 2020
+#| echo: false
+#| warning: false
+#| message: false
+
+modelplot(hit_song_model_results, conf_level = 0.9) +
+  labs(x = "90 per cent credibility interval")
+```
 
 # Discussion {#sec-discussion}
 
