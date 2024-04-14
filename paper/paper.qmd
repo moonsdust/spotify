@@ -24,6 +24,7 @@ library(ggcorrplot)
 library(ggplot2)
 library(knitr)
 library(modelsummary)
+library(rstanarm)
 
 # Packages related to causal model created
 library(DiagrammeR)
@@ -63,9 +64,11 @@ In the rest of this paper, the data section (@sec-data) will cover the dataset u
 #| message: false
 
 playlist_analysis_data |> 
+  select(hit_year, track_duration_ms, tempo, loudness, mode_name, key_mode, period) |>
   head() |>
   kable()
 ```
+Not seen in @tbl-dataset-preview, before_pandemic, major, and minor are numerical versions of the mode_name and period columns. 
 
 ## Methodology
 The dataset used in this paper was retrieved, simulated, cleaned, analyzed, and tested using the R programming language [@citeR], tidyverse [@citetidyverse], knitr [@citeknitr], janitor [@citejanitor], dplyr [@citedplyr], ggplot2 [@citeggplot2], spotifyr [@citespotifyr], usethis [@citeusethis], arrow [@citearrow], ggcorrplot [@citeggcorrplot], testthat [@citetestthat]. The packages that were used for the model-related sections or used for the model itself are DiagrammeR [@citeDiagrammeR], rsvg [@citersvg], magrittr [@citemagrittr], DiagrammeRsvg [@citeDiagrammeRsvg], png [@citepng], rstanarm [@citerstanarm], and modelsummary [@citemodelsummary]. 
@@ -153,36 +156,6 @@ We ran the model using the rstanarm package of @citerstanarm and we used the def
 ## Difference in song characteristics before 2020 (the pandemic) and during and after 2020 (the pandemic) of songs from the Billboard Year-End Hot 100 singles 
 
 ### Scale and Modality
-```{r}
-#| label: fig-key-mode-bar
-#| fig-cap: Proportion of songs in different scales before 2020 versus during and after 2020
-#| echo: false
-#| warning: false
-#| message: false
-
-proportion_of_each_key_mode <- 
-  playlist_analysis_data |>
-  # Group by if song was a hit before or during and after the pandemic
-  group_by(period) |>
-  # Count each scale
-  count(key_mode) |>
-  # rename count column to num_of_key_mode
-  rename(
-    'num_of_key_mode' = n
-  ) |>
-  mutate( 
-    proportion_key_mode =  round(num_of_key_mode / sum(num_of_key_mode), 2)
-  ) 
-
-proportion_of_each_key_mode |> 
-  ggplot(mapping = aes(x = key_mode, y = proportion_key_mode)) +
-  facet_wrap(facets = vars(period), dir = "v") + 
-  geom_bar(stat="identity", binwidth = 3) +
-  theme_minimal() +
-  labs(x = "Scale",
-       y = "Proportion") + 
-  theme(axis.text.x = element_text(angle = 90))
-```
 
 ```{r}
 #| label: fig-mode-bar
@@ -215,6 +188,7 @@ proportion_of_each_mode |>
        y = "Proportion") + 
   theme(axis.text.x = element_text(angle = 90))
 ```
+
 ```{r}
 #| label: tbl-mode-table
 #| tbl-cap: Proportion of songs whose modality is in a major or minor key before 2020 versus during and after 2020
@@ -232,6 +206,38 @@ proportion_of_each_mode |>
   kable()
 ```
 
+```{r}
+#| label: fig-key-mode-bar
+#| fig-cap: Proportion of songs in different scales before 2020 versus during and after 2020
+#| echo: false
+#| warning: false
+#| message: false
+
+proportion_of_each_key_mode <- 
+  playlist_analysis_data |>
+  # Group by if song was a hit before or during and after the pandemic
+  group_by(period) |>
+  # Count each scale
+  count(key_mode) |>
+  # rename count column to num_of_key_mode
+  rename(
+    'num_of_key_mode' = n
+  ) |>
+  mutate( 
+    proportion_key_mode =  round(num_of_key_mode / sum(num_of_key_mode), 2)
+  ) 
+
+proportion_of_each_key_mode |> 
+  ggplot(mapping = aes(x = key_mode, y = proportion_key_mode)) +
+  facet_wrap(facets = vars(period), dir = "v") + 
+  geom_bar(stat="identity", binwidth = 3) +
+  theme_minimal() +
+  labs(x = "Scale",
+       y = "Proportion") + 
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+\newpage 
 
 ### Track Duration
 
@@ -303,6 +309,7 @@ playlist_analysis_data |>
   summary() |>
   kable()
 ```
+
 ```{r}
 #| label: tbl-track-duration-stats-during-after
 #| tbl-cap: Minimum, quartiles, median, and maximum of track duration (in ms) during and after 2020
@@ -323,7 +330,7 @@ playlist_analysis_data |>
   kable()
 ```
 
-
+\newpage
 
 ### Loudness
 
@@ -398,7 +405,7 @@ playlist_analysis_data |>
   summary() |>
   kable()
 ```
-
+\newpage
 
 ### Tempo
 
@@ -475,6 +482,7 @@ playlist_analysis_data |>
   kable()
 ```
 
+\newpage
 
 
 ## Model Results
@@ -502,6 +510,7 @@ modelsummary(
 modelplot(hit_song_model_results, conf_level = 0.9) +
   labs(x = "90 per cent credibility interval")
 ```
+\newpage
 
 # Discussion {#sec-discussion}
 
@@ -532,16 +541,41 @@ ggcorrplot(cor(numeric_playlist_analysis_data),
            outline.color = "white", lab = TRUE, legend.title = "Correlation") 
 ```
 
-
-## Model details {#sec-model-details}
-[To Do]
-
-### Posterior predictive check
-
-### Diagnostics
-
-
 \newpage
+
+## Posterior predictive check for model {#sec-model-details-posterior-check}
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+#| label: fig-posteriorpredictive
+#| fig-cap: "How the data impacts how the model fits"
+#| fig-subcap: ["Posterior prediction check for the model"]
+#| layout-ncol: 1
+
+rstanarm::pp_check(hit_song_model_results) +
+  theme_classic() +
+  theme(legend.position = "bottom")
+```
+\newpage
+
+## Diagnostics for model {#sec-model-details-diagnostics}
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+#| label: fig-convergencecheck
+#| fig-cap: "Checking the convergence of the MCMC algorithm for hit song model"
+#| fig-subcap: ["Trace plot for model", "Rhat plot for model"]
+#| layout-ncol: 2
+
+plot(hit_song_model_results, "trace")
+
+plot(hit_song_model_results, "rhat") + theme_minimal()
+```
+
 
 
 # References
