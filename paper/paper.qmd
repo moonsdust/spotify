@@ -74,7 +74,26 @@ Not seen in @tbl-dataset-preview, before_pandemic, major, and minor are numerica
 The dataset used in this paper was retrieved, simulated, cleaned, analyzed, and tested using the R programming language [@citeR], tidyverse [@citetidyverse], knitr [@citeknitr], janitor [@citejanitor], dplyr [@citedplyr], ggplot2 [@citeggplot2], spotifyr [@citespotifyr], usethis [@citeusethis], arrow [@citearrow], ggcorrplot [@citeggcorrplot], testthat [@citetestthat]. The packages that were used for the model-related sections or used for the model itself are DiagrammeR [@citeDiagrammeR], rsvg [@citersvg], magrittr [@citemagrittr], DiagrammeRsvg [@citeDiagrammeRsvg], png [@citepng], rstanarm [@citerstanarm], and modelsummary [@citemodelsummary]. 
 
 # Model {#sec-model}
+From our analysis of the data, we observed that there were trends between a song's duration, loudness, tempo, and modality for top songs prior 2020 and 2020 onwards. We are interested in investigating if a song is likely to be a top song prior to 2020 or not based on what we know about the duration, loudness, tempo, and modality of a top song. We will do this by creating a model. 
 
+## Model set-up
+In order to predict a top song was a hit prior to 2020, we will make the assumption that there is a relationship between the outcome variable, if the song is a top song prior to 2020 and our variables of interests: duration, loudness, tempo, and modality. Our variables of interests will be the predictor variables for the model. We will define our model as a logistic regression model with a Bayesian approach as follows:
+\begin{align*} 
+y_i|\pi_i &\sim \mbox{Bern}(\pi_i) \\
+\mbox{logit}(\pi_i) &= \beta_0 + \beta_1 \times \mbox{duration}_i + \beta_2 \times \mbox{loudness}_i + \beta_3 \times \mbox{tempo}_i + \beta_4 \times \mbox{modality}_i\\
+\beta_0 &\sim \mbox{Normal}(0, 2.5) \\
+\beta_1 &\sim \mbox{Normal}(0, 2.5) \\
+\beta_2 &\sim \mbox{Normal}(0, 2.5) \\
+\beta_3 &\sim \mbox{Normal}(0, 2.5) \\
+\beta_4 &\sim \mbox{Normal}(0, 2.5) \\
+\end{align*}
+
+We define $y_i$ to be a top song, which if it is 1 represents a top song prior to 2020 and 0 if it is a top song from 2020 onwards. $\pi_i$ is the probability that a top song $i$ is a top song prior to 2020. Let $\mbox{duration}_i$ be the duration of the top song in milliseconds (ms) and $\mbox{loudness}_i$ to be the mean loudness of a top song in decibels (dB). Set $\mbox{tempo}_i$ to be the mean beats per minutes (BPM) of a top song and $\mbox{modality}_i$ to be the modality of the top song, where 1 means the melody of the song is in a minor key and 0 if it is in a major key. 
+
+We ran the model using the rstanarm package (@citerstanarm) with the default priors from the package. Diagnostics related to the model such as a trace plot, Rhat plot, and posterior predictive check can be found at @sec-appendix.
+
+### Model justification
+A logistic regression model was chosen because our outcome variable, if the song is a top song prior to 2020, is a binary outcome. However, alternative models were considered such as a multiple linear regression model since the model has multiple predictor variables. Other regressions models like negative binomial regressions were also considered but they were not chosen since we are not deleting with discrete counts for the outcome. Our logistic regression model describes the following causal relationship (@fig-causal-model) where song characteristics predicts whatever a hit song was made prior to 2020, excluding a confounder, lyrics. The assumption we make is that there is a relationship between song characteristics and a top song being a hit prior to 2020. In @fig-causal-model, the reason lyrics is a confounder is because lyrics can affect not only if the song was a hit prior to 2020 but also song characteristics. However, we are unable to observe the effects of lyrics directly with our data.
 ```{r}
 #| label: fig-causal-model
 #| fig-cap: Causal relationship between song characteristics and hit song (before 2020 or during and after 2020)
@@ -122,33 +141,6 @@ the_image <- readPNG("../other/sketches/graph_2_casual_model.png")
 plot.new()
 rasterImage(the_image, 0, 0, 0.8, 1.13)
 ```
-
-[To Do]
-
-We are interested in investigating if a song is likely to be a top song prior to 2020 or not based on what we know about the duration, loudness, tempo, and modality of a top song. 
-
-## Model set-up
-
-We will define our logistic regression model as follows. 
-
-\begin{align*} 
-y_i|\pi_i &\sim \mbox{Bern}(\pi_i) \\
-\mbox{logit}(\pi_i) &= \beta_0 + \beta_1 \times \mbox{duration}_i + \beta_2 \times \mbox{loudness}_i + \beta_3 \times \mbox{tempo}_i + \beta_4 \times \mbox{modality}_i\\
-\beta_0 &\sim \mbox{Normal}(0, 2.5) \\
-\beta_1 &\sim \mbox{Normal}(0, 2.5) \\
-\beta_2 &\sim \mbox{Normal}(0, 2.5) \\
-\beta_3 &\sim \mbox{Normal}(0, 2.5) \\
-\beta_4 &\sim \mbox{Normal}(0, 2.5) \\
-\end{align*}
-
-We define $y_i$ to be a top song, which if it is 1 represents a top song prior to 2020 and 0 if it is a top song from 2020 onwards. $\pi_i$ is the probability that a top song $i$ is a top song prior to 2020. Let $\mbox{duration}_i$ be the duration of the top song in milliseconds (ms) and $\mbox{loudness}_i$ to be the mean loudness of a top song in decibels (dB). Set $\mbox{tempo}_i$ to be the mean beats per minutes (BPM) of a top song and $\mbox{modality}_i$ to be the modality of the top song, where 1 means the melody of the song is in a minor key and 0 if it is in a major key. 
-
-We ran the model using the rstanarm package of @citerstanarm and we used the default priors from rstanarm.
-
-
-### Model justification
-[To Do]
-
 
 # Results {#sec-results}
 [To Finish]
@@ -560,7 +552,7 @@ rstanarm::pp_check(hit_song_model_results) +
 ```
 \newpage
 
-## Diagnostics for model {#sec-model-details-diagnostics}
+## Diagnostics for model  {#sec-model-details-diagnostics}
 ```{r}
 #| echo: false
 #| eval: true
