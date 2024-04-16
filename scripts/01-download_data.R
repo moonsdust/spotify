@@ -4,22 +4,23 @@
 # Date: 2 April 2024
 # Contact: em.su@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: 00-install_packages.R has been ran to install the necessary packages.
+# Pre-requisites: 00-install_packages.R has been ran to install the necessary
+# packages.
 
 # IMPORTANT NOTE ABOUT THIS SCRIPT:
-# 1. popularity column is updated frequently by Spotify and there is a chance that 
-# the results when replicated might be slightly off from what is described in the paper if 
-# this script is ran. 
+# 1. popularity column is updated frequently by Spotify and there is a chance
+# that the results when replicated might be slightly off from what is described
+# in the paper if this script is ran.
 
-# 2. If this script does not run it is likely because you need to create a 
+# 2. If this script does not run it is likely because you need to create a
 # Spotify Developer Account and a new app for spotifyr. After doing this,
-# call library("usethis") in your console in your RStudio environment, 
-# call edit_r_environ() to open the .Renviron file and add in the following 
-# with the values changed to your new app's Client ID and Client Secret, which can 
-# be found in your new app's settings:
+# call library("usethis") in your console in your RStudio environment,
+# call edit_r_environ() to open the .Renviron file and add in the following
+# with the values changed to your new app's Client ID and Client Secret, which
+# can be found in your new app's settings:
 
-# SPOTIFY_CLIENT_ID = 'PUT_YOUR_CLIENT_ID_HERE'
-# SPOTIFY_CLIENT_SECRET = 'PUT_YOUR_SECRET_HERE'
+# (Spotify Client ID) SPOTIFY_CLIENT_ID = 'PUT_YOUR_CLIENT_ID_HERE'
+# (Spotify Client Secret) SPOTIFY_CLIENT_SECRET = 'PUT_YOUR_SECRET_HERE'
 
 # For more detail, please see https://www.rcharlie.com/spotifyr/
 
@@ -28,8 +29,8 @@ library(tidyverse)
 library(spotifyr)
 
 #### Download data ####
-wickeddreamer96_username <- 'wickeddreamer96'
-antoniomendoza_username <- 'antoniomendoza_'
+wickeddreamer96_username <- "wickeddreamer96"
+antoniomendoza_username <- "antoniomendoza_"
 
 # 2014 Playlist: 2014 Billboard Year End Hot 100
 playlist_2014_path <- "2trgZsxRpWX7sq28yHC40u"
@@ -62,14 +63,25 @@ playlist_2022_path <- "78xbP3FhfATJrpV89eT4RB"
 playlist_2023_path <- "2FVuVMe3WUkfxUXnfwNxpS"
 
 # Vector containing all the playlist paths
-playlist_paths_antoniomendoza <- c(playlist_2018_path, playlist_2019_path, playlist_2020_path, playlist_2021_path, playlist_2022_path, playlist_2023_path)
-playlist_paths_wickeddreamer96 <- c(playlist_2014_path, playlist_2015_path, playlist_2016_path, playlist_2017_path)
+playlist_paths_antoniomendoza <- c(
+  playlist_2018_path, playlist_2019_path,
+  playlist_2020_path, playlist_2021_path,
+  playlist_2022_path, playlist_2023_path
+)
+playlist_paths_wickeddreamer96 <- c(
+  playlist_2014_path, playlist_2015_path,
+  playlist_2016_path, playlist_2017_path
+)
 
-# Get data on playlists' audio features 
-raw_playlists_data_1 <- get_playlist_audio_features(wickeddreamer96_username, playlist_paths_wickeddreamer96)
-raw_playlists_data_2 <- get_playlist_audio_features(antoniomendoza_username, playlist_paths_antoniomendoza)
+# Get data on playlists' audio features
+raw_playlists_data_1 <- get_playlist_audio_features(
+  wickeddreamer96_username, playlist_paths_wickeddreamer96
+)
+raw_playlists_data_2 <- get_playlist_audio_features(
+  antoniomendoza_username, playlist_paths_antoniomendoza
+)
 
 raw_playlists_data <- rbind(raw_playlists_data_1, raw_playlists_data_2)
 
 #### Save data ####
-write_csv(raw_playlists_data, "data/raw_data/raw_playlists_data.csv") 
+write_csv(raw_playlists_data, "data/raw_data/raw_playlists_data.csv")

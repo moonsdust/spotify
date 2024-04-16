@@ -1,11 +1,11 @@
 #### Preamble ####
-# Purpose: Cleans the dataset on Spotify playlists and outputs a parquet file. 
+# Purpose: Cleans the dataset on Spotify playlists and outputs a parquet file.
 # Author: Emily Su
 # Date: 2 April 2024
 # Contact: em.su@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: 00-install_packages.R and 01-download_data.R has been ran to install necessary packages
-# and download raw data. 
+# Pre-requisites: 00-install_packages.R and 01-download_data.R has been ran
+# to install necessary packages and download raw data.
 
 #### Workspace setup ####
 library(tidyverse)
@@ -14,23 +14,25 @@ library(arrow)
 library(dplyr)
 
 #### Clean data ####
-# Read in raw data 
-raw_data <- read_csv("data/raw_data/raw_playlists_data.csv", show_col_types = FALSE)
+# Read in raw data
+raw_data <- read_csv("data/raw_data/raw_playlists_data.csv",
+                     show_col_types = FALSE)
 
-# Clean column names 
-cleaned_data <- 
+# Clean column names
+cleaned_data <-
   raw_data |>
   clean_names()
 
-# Select columns: playlist_name, track_name, track_album_name, 
+# Select columns: playlist_name, track_name, track_album_name,
 # track_duration_ms, tempo, loudness, mode_name, key_mode
-cleaned_data <- 
+cleaned_data <-
   cleaned_data |>
-  select(playlist_name, track_name, track_album_name, 
+  select(playlist_name, track_name, track_album_name,
          track_duration_ms, tempo, loudness, mode_name, key_mode)
 
-# Create hit_year, period, before_pandemic, major, and minor columns and remove playlist_name column
-cleaned_data <- 
+# Create hit_year, period, before_pandemic, major, and minor columns
+# and remove playlist_name column
+cleaned_data <-
   cleaned_data |>
   mutate(
     hit_year = case_when(
@@ -63,41 +65,39 @@ cleaned_data <-
     )
   ) |>
   mutate(
-    before_pandemic = case_when(
-      (period == "Before Pandemic") ~ 1,
-      (period == "During and After Pandemic") ~ 0,
-      TRUE ~ 1
-    ) 
-  )|> 
+    before_pandemic = case_when((period == "Before Pandemic") ~ 1,
+                                (period == "During and After Pandemic")
+                                ~ 0,
+                                TRUE ~ 1)
+  ) |>
   mutate(
     major = case_when(
-          (mode_name == "major") ~ 1,
-          (mode_name == "minor") ~ 0,
-          TRUE ~ 0
-          ) 
-  )|>
+      (mode_name == "major") ~ 1,
+      (mode_name == "minor") ~ 0,
+      TRUE ~ 0
+    )
+  ) |>
   mutate(
     minor = case_when(
       (mode_name == "minor") ~ 1,
       (mode_name == "major") ~ 0,
       TRUE ~ 0
-    ) 
+    )
   ) |>
   select(
-    hit_year, track_name, track_album_name, track_duration_ms, 
-    tempo, loudness, mode_name, key_mode, period, before_pandemic, 
+    hit_year, track_name, track_album_name, track_duration_ms,
+    tempo, loudness, mode_name, key_mode, period, before_pandemic,
     major, minor
-  ) 
+  )
 
 # Remove duplicate rows and then remove track_name and track_album_name
 cleaned_data <- distinct(cleaned_data)
-cleaned_data <- 
+cleaned_data <-
   cleaned_data |>
-  select(
-    hit_year, track_duration_ms, tempo, loudness, 
+  select(hit_year, track_duration_ms, tempo, loudness,
     mode_name, key_mode, period, before_pandemic, major, minor
-  ) 
-
+  )
 
 #### Save data ####
-write_parquet(cleaned_data, "data/analysis_data/playlists_analysis_data.parquet")
+write_parquet(cleaned_data,
+              "data/analysis_data/playlists_analysis_data.parquet")

@@ -14,16 +14,18 @@ install.packages("janitor") # To clean datasets
 install.packages("dplyr")
 install.packages("ggplot2") # To make graphs
 install.packages("spotifyr") # Spotify API
-install.packages("usethis") 
+install.packages("usethis") # For storing app info for Spotify API
 install.packages("arrow") # To allow Parquet files to be create
 install.packages("ggcorrplot") # For correlation matrix
 install.packages("testthat") # To test
+install.packages("lintr") # To check styling of code
+install.packages("styler") # Styles code
+
 # For models
 install.packages("DiagrammeR")
 install.packages("rsvg")
 install.packages("magrittr")
 install.packages("DiagrammeRsvg")
 install.packages("png")
-
 install.packages("rstanarm")
-install.packages("modelsummary")
+install.packages("modelsummary")# modelsummary package

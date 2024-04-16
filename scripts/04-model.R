@@ -4,9 +4,10 @@
 # Date: 2 April 2024
 # Contact: em.su@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: 00-install_packages.R, 01-download_data.R, 02-data_cleaning.R, and
-# 03-test_data.R has been ran to install necessary packages, download raw data, and 
-# clean the data, and test the data, respectively.
+# Pre-requisites: 00-install_packages.R, 01-download_data.R,
+# 02-data_cleaning.R, and 03-test_data.R has been ran to install
+# necessary packages, download raw data, and clean the data,
+# and test the data, respectively.
 
 
 #### Workspace setup ####
@@ -17,14 +18,16 @@ library(arrow)
 set.seed(646)
 
 #### Read data ####
-analysis_data <- read_parquet("data/analysis_data/playlists_analysis_data.parquet")
+analysis_data <-
+  read_parquet("data/analysis_data/playlists_analysis_data.parquet")
 
 ### Model data ####
 
 # Logistic regression model for hit song before 2020/pandemic
 hit_song_model <-
   stan_glm(
-    formula = before_pandemic ~ track_duration_ms + loudness + tempo + mode_name,
+    formula =
+    before_pandemic ~ track_duration_ms + loudness + tempo + mode_name,
     data = analysis_data,
     family = binomial(link = "logit"),
     prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
