@@ -6,15 +6,16 @@
 # Pre-requisites: Have ran all scripts found in the scripts folder
 
 # Referenced https://mastering-shiny.org/basic-ui.html for code
-
+library(tidyverse)
 library(shiny)
 library(shinyWidgets)
 library(ggplot2)
-library(arrow)
 
 # Read in dataset
-playlist_analysis_data <-
-  read_parquet("../../data/analysis_data/playlists_analysis_data.parquet")
+shiny_app_data <-
+  read_csv("../../data/analysis_data/shiny_app_data.csv",
+    show_col_types = FALSE
+  )
 
 # Graph choice
 graph_choice <- c("Track Duration", "Scale and Modality", "Loudness", "Tempo")
@@ -64,7 +65,7 @@ server <- function(input, output) {
     # Scale Plot
     if (input$the_choice == "Scale and Modality") {
       proportion_of_each_key_mode <-
-        playlist_analysis_data |>
+        shiny_app_data |>
         # Group by if song was a hit before or during and after the pandemic
         group_by(period) |>
         # Count each scale
@@ -90,7 +91,7 @@ server <- function(input, output) {
     }
     # Track Duration Plot
     else if (input$the_choice == "Track Duration") {
-      playlist_analysis_data |>
+      shiny_app_data |>
         ggplot(mapping = aes(x = track_duration_ms)) +
         facet_wrap(facets = vars(period), dir = "v") +
         geom_histogram(
@@ -105,7 +106,7 @@ server <- function(input, output) {
     }
     # Loudness plot
     else if (input$the_choice == "Loudness") {
-      playlist_analysis_data |>
+      shiny_app_data |>
         ggplot(mapping = aes(x = loudness)) +
         facet_wrap(facets = vars(period), dir = "v") +
         geom_histogram(bins = input$number_of_bins, fill = "#ECD078FF") +
@@ -117,7 +118,7 @@ server <- function(input, output) {
     }
     # Tempo plot
     else {
-      playlist_analysis_data |>
+      shiny_app_data |>
         ggplot(mapping = aes(x = tempo)) +
         facet_wrap(facets = vars(period), dir = "v") +
         geom_histogram(bins = input$number_of_bins, fill = "#A7DBD8") +

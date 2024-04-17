@@ -99,5 +99,9 @@ cleaned_data <-
   )
 
 #### Save data ####
+# Save as a Parquet file
 write_parquet(cleaned_data,
               "data/analysis_data/playlists_analysis_data.parquet")
+# Save as a CSV file for Shiny App only
+write_csv(cleaned_data,
+          "data/analysis_data/shiny_app_data.csv")
