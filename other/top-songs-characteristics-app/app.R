@@ -13,7 +13,7 @@ library(ggplot2)
 
 # Read in dataset
 shiny_app_data <-
-  read_csv("../../data/analysis_data/shiny_app_data.csv",
+  read_csv("https://raw.githubusercontent.com/moonsdust/top-songs/ec993c0add1e9a2e2c1efa0fe2c3e68623209fed/other/top-songs-characteristics-app/shiny_app_data.csv",
     show_col_types = FALSE
   )
 
