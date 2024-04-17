@@ -13,7 +13,7 @@ The repo is structured as:
 -   `data/raw_data` contains the raw data as obtained from Spotify.
 -   `data/analysis_data` contains the cleaned dataset that was constructed.
 -   `model` contains the fitted model for hit songs. 
--   `other` contains sketches.
+-   `other` contains sketches and the code to create the Shiny app corresponding to the paper.
 -   `paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper.
 -   `scripts` contains the R scripts used to simulate, download and clean data.
 
