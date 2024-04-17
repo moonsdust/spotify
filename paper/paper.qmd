@@ -102,10 +102,9 @@ y_i|\pi_i &\sim \mbox{Bern}(\pi_i) \\
 
 We define $y_i$ to be a top song, which if it is 1 represents a top song prior to 2020 and 0 if it is a top song from 2020 onwards. $\pi_i$ is the probability that a top song $i$ is a top song prior to 2020. Let $\mbox{duration}_i$ be the duration of the top song in milliseconds (ms) and $\mbox{loudness}_i$ to be the mean loudness of a top song in decibels (dB). Set $\mbox{tempo}_i$ to be the mean beats per minutes (BPM) of a top song and $\mbox{modality}_i$ to be the modality of the top song, where 1 means the melody of the song is in a minor key and 0 if it is in a major key. 
 
-We ran the model using the rstanarm package [@citerstanarm] with the default priors from the package. Diagnostics related to the model such as a trace plot, Rhat plot, and posterior predictive check can be found at @sec-appendix.
+We ran the model using the rstanarm package [@citerstanarm] and R [@citeR] with the default priors from the rstanarm package. Diagnostics related to the model such as a trace plot, Rhat plot, and posterior predictive check can be found at @sec-appendix.
 
 ### Model justification
-A logistic regression model was chosen because our outcome variable, if the song is a top song prior to 2020, is a binary outcome. However, alternative models were considered such as a multiple linear regression model since the model has multiple predictor variables. Other regressions models like negative binomial regressions were also considered but they were not chosen since we are not deleting with discrete counts for the outcome. Our logistic regression model describes the following causal relationship (@fig-causal-model) where song characteristics predicts whatever a hit song was made prior to 2020, excluding a confounder, lyrics. The assumption we make is that there is a relationship between song characteristics and a top song being a hit prior to 2020. In @fig-causal-model, the reason lyrics is a confounder is because lyrics can affect not only if the song was a hit prior to 2020 but also song characteristics. However, we are unable to observe the effects of lyrics directly with our data. Weakness and further improvments to the model are discussed in @sec-discussion. 
 ```{r}
 #| label: fig-causal-model
 #| fig-cap: Causal relationship between song characteristics and hit song (before 2020 or during and after 2020)
@@ -153,14 +152,14 @@ the_image <- readPNG("../other/sketches/graph_2_casual_model.png")
 plot.new()
 rasterImage(the_image, 0, 0, 0.8, 1.13)
 ```
+A logistic regression model was chosen because our outcome variable, if the song is a top song prior to 2020, is a binary outcome. However, alternative models were considered such as a multiple linear regression model since the model has multiple predictor variables. Other regressions models like negative binomial regressions were also considered but they were not chosen since we are not deleting with discrete counts for the outcome. Our logistic regression model describes the following causal relationship (@fig-causal-model) where song characteristics predicts whatever a hit song was made prior to 2020, excluding a confounding variable, lyrics. The assumption we make is that there is a relationship between song characteristics and a top song being a hit prior to 2020. In @fig-causal-model, the reason lyrics is a confounding variable is because lyrics can affect not only if the song was a hit prior to 2020 but also song characteristics. However, we are unable to observe the effects of lyrics directly with our data. Weakness and further improvements to the model are discussed in @sec-discussion. 
 
 # Results {#sec-results}
-[To Finish]
+In this section, we visualized our data through graphs and tables as well as present the results from our model. 
 
 ## Difference in song characteristics before 2020 (the pandemic) and during and after 2020 (the pandemic) of songs from the Billboard Year-End Hot 100 singles 
 
 ### Scale and Modality
-
 ```{r}
 #| label: fig-mode-bar
 #| fig-cap: Proportion of songs whose modality is in a major or minor key before 2020 versus during and after 2020
@@ -490,12 +489,14 @@ playlist_analysis_data |>
 
 
 ## Model Results
-@tbl-model-result and @fig-model-result-ci shows the results of our logistic regression model. @tbl-model-result indicates that the y-intercept is -2.002, this however has no meaning in this situation since we only have two outcomes, 0 and 1 to represent a hit song from 2020 onwards and a hit song prior to 2020, respectively. @tbl-model-result and @fig-model-result-ci reveal that the coefficient of track duration is 0.000 when tempo, mode, and loudness are constant and its credible interval contains 0. [The credible interval means.......] This indicates there is no relationship between a song being a hit before 2020 and the duration of the song. Since its credible interval is narrow,
 
+@tbl-model-result and @fig-model-result-ci shows the results of our logistic regression model. @tbl-model-result shows the coefficient estimates obtained for our model with their mean absolute deviation (MAD) while @fig-model-result-ci showcases the coefficient estimates (the dot) alongside their 90% credible interval (the line). Coefficient estimates represents....[@citecoefficientsdef]. Mean absolute deviation is....
+
+@tbl-model-result indicates that the y-intercept is -2.002, this however has no meaning in this situation since we only have two outcomes, 0 and 1 to represent a hit song from 2020 onwards and a hit song prior to 2020, respectively. @tbl-model-result and @fig-model-result-ci reveal that the coefficient of track duration is 0.000 when tempo, mode, and loudness remains constant and its credible interval....... [The credible interval means.......] This indicates there is no relationship between a song being a hit before 2020 and the duration of the song. 
 
 ```{r}
 #| label: tbl-model-result
-#| tbl-cap: How likely a hit song is a hit before 2020 / the pandemic based on its tempo, song duration, loudness, and modality
+#| tbl-cap: Relationships of a hit song is a hit before 2020 / the pandemic with its tempo, song duration, loudness, and modality with their mean absolute deviation (MAD) values in parenthesis. 
 #| echo: false
 #| warning: false
 #| message: false
@@ -505,15 +506,16 @@ modelsummary(
   statistic = "mad"
 )
 ```
+
 ```{r}
 #| label: fig-model-result-ci
-#| fig-cap: The credible intervals for predictors of a hit song before 2020
+#| fig-cap: The credible intervals (line) for coefficient estimates (dot) of predictors of a hit song before 2020
 #| echo: false
 #| warning: false
 #| message: false
 
 modelplot(hit_song_model_results, conf_level = 0.9) +
-  labs(x = "90 per cent credibility interval")
+  labs(x = "90 per cent credible interval")
 ```
 
 
