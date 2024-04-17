@@ -19,6 +19,7 @@ install.packages("arrow") # To allow Parquet files to be create
 install.packages("ggcorrplot") # For correlation matrix
 install.packages("testthat") # To test
 install.packages("lintr") # To check styling of code
+install.packages("styler") # To style code
 # For app
 install.packages("shiny")
 install.packages("shinyWidgets")
