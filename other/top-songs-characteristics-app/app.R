@@ -5,7 +5,9 @@
 # License: MIT
 # Pre-requisites: Have ran all scripts found in the scripts folder
 
-# Referenced https://mastering-shiny.org/basic-ui.html for code
+# Referenced Telling Stories with Data by Rohan Alexander
+# (https://tellingstorieswithdata.com/) for code
+
 library(tidyverse)
 library(shiny)
 library(shinyWidgets)
@@ -43,6 +45,7 @@ ui <- fluidPage(
                   view a graph for?",
         graph_choice
       ),
+      # Referenced https://mastering-shiny.org/basic-ui.html
       sliderInput(
         inputId = "number_of_bins",
         label = "Number of bins:",
