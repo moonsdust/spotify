@@ -56,7 +56,7 @@ The dataset used in this paper was retrieved, simulated, cleaned, analyzed, and 
 
 ## Data Source and Measurements
 The data used for the model and analysis comes from the ```playlists_analysis_data``` dataset. This dataset was constructed by using an R wrapper for Spotify's API called spotifyr [@citespotifyr] to scrape playlists complied by Spotify users antoniomendoza and wickeddreamer96 of songs from the Billboard Year-End Hot 100 singles from 2014 to 2023 [@citebillboard]. User antoniomendoza created playlists for the years 2018 to 2023, inclusive, while user wickeddreamer96 created playlists for the years 2014 to 2017, inclusive. The latest version of the data used was scraped on Tuesday March 26, 2024 at 9:46pm EDT. The Billboard Year-End Hot 100 singles list for the year 2014 onward was created based on data from Nielsen SoundScan [@citenielsen]. Nielsen SoundScan
-collect data weekly from 39,000 retail outlets, venus, etc. in 19 countries such as Canada and the United States on in-store sales and digital sales [@citenielsen]. They also track how often songs are streamed online and played on the radio [@citenielsen]. 
+collect data weekly from 39,000 retail outlets, venus, etc. in 19 countries such as Canada and the United States on in-store sales and digital sales [@citenielsen]. They also track how often songs are streamed online and played on the radio [@citenielsen]. The list comprise of songs they collected data on starting from December of the previous year to the end of November of the current year, which is when Billboard releases the Year-End Hot 100 list [@citebillboardcalculations].
 
 Initially, we had scraped playlists created by Spotify that they have compiled of the top songs on the app. However, we had an insufficient amount of observations from these playlists for our dataset since each only had around 50 songs and there were years where Spotify had not created a top song playlist for such as 2021 and 2022.
 
@@ -73,7 +73,7 @@ playlist_analysis_data |>
   head() |>
   kable()
 ```
-Not seen in @tbl-dataset-preview, before_pandemic, major, and minor are numerical versions of the mode_name and period columns. The variables that were originally the raw dataset that was scraped are track_duration_ms, tempo, loudness, mode_name, and key_mode. track_duration_ms describes the duration of the song in milliseconds (ms), tempo is the mean beats per minutes (BPM) of the song, and loudness is mean loudness of a top song in decibels (dB). mode_name represents the key the melody of the song is in, which is either "major" or "minor" and key_mode signifies the scale the song is in. 
+Not seen in @tbl-dataset-preview, before_pandemic, major, and minor are numerical versions of the mode_name and period columns. The variables that were originally the raw dataset that was scraped are track_duration_ms, tempo, loudness, mode_name, and key_mode. track_duration_ms describes the duration of the song in milliseconds (ms), tempo is the mean (average) beats per minutes (BPM) of the song, and loudness is mean loudness of a top song in decibels (dB). mode_name represents the key the melody of the song is in, which is either "major" or "minor" and key_mode signifies the scale the song is in. 
 
 The variables constructed from the raw dataset are before_pandemic, period, hit_year, major, and minor. How these variables were constructed was that hit_year was obtained from check the name of the playlist and it represents the hit. From hit_year, the period column was constructed, which indicates whatever or not the hit year of the song was before 2020, which was when the COVID-19 pandemic started, or during 2020 onwards. Reading from the period column, the before_pandemic column was created, where 1 represents that the song was a hit song before the pandemic and 0 otherwise. The major and minor columns represents whatever or not the melody of the song is in a major or minor key and the value would be 1 if it's that key and 0 otherwise. These columns were constructed from checking mode_name when it would indicate either "major" or "minor".
 
@@ -241,7 +241,7 @@ When looking into the specific scales of the songs, @fig-key-mode-bar and @tbl-s
 ### Track Duration
 ```{r}
 #| label: fig-track-duration-scatterplot
-#| fig-cap: "Relationship between the hit year and track duration of a song on Billboard's Year-End Hot 100 singles. Songs from the same year are grouped in the same colour and the horizontal, dashed line divides the hit tracks before 2020 and hit tracks from 2020 and beyond. Blue curve describes the overall trend."
+#| fig-cap: "Relationship between the hit year and track duration of a song (in ms) on Billboard's Year-End Hot 100 singles list. Songs from the same year are grouped in the same colour and the horizontal, dashed line divides the hit tracks before 2020 and hit tracks from 2020 and beyond. Blue, smoother line describes the overall trend and relationship between hit year and track duration."
 #| echo: false
 #| warning: false
 #| message: false
@@ -289,10 +289,10 @@ playlist_analysis_data |>
   labs(x = "Duration of song (in ms)",
        y = "Count")
 ```
-
+\newpage
 ```{r}
 #| label: tbl-track-duration-stats-before
-#| tbl-cap: Minimum, quartiles, median, and maximum of track duration (in ms) before 2020 (the pandemic)
+#| tbl-cap: "Minimum, quartiles, median, and maximum of track duration (in ms) before 2020 (the pandemic) on Billboard's Year-End Hot 100 list"
 #| echo: false
 #| warning: false
 #| message: false
@@ -312,7 +312,7 @@ playlist_analysis_data |>
 
 ```{r}
 #| label: tbl-track-duration-stats-during-after
-#| tbl-cap: Minimum, quartiles, median, and maximum of track duration (in ms) during and after 2020 (the pandemic)
+#| tbl-cap: "Minimum, quartiles, median, and maximum of track duration (in ms) during and after 2020 (the pandemic) on Billboard's Year-End Hot 100 list"
 #| echo: false
 #| warning: false
 #| message: false
@@ -329,41 +329,32 @@ playlist_analysis_data |>
   summary() |>
   kable()
 ```
-@fig-track-duration-scatterplot reveals that songs over the years from 2014 to 2023 decreased slightly in duration overall. @fig-track-duration-hist shows that distribution in 
-
-
-@fig-track-duration-boxplot
-
-
-
-
-
-
-
+@fig-track-duration-scatterplot reveals that songs over the years from 2014 to 2020 decreased slightly in duration and from 2020 onwards, there was almost no change in trend overall based on the blue, smoother line. @fig-track-duration-hist shows that the distribution for top songs before the pandemic and during and after the pandemic are skewed to the right. According to  @tbl-track-duration-stats-during-after and @tbl-track-duration-stats-before, the distribution of top songs during and after the pandemic are more disperse around their mean of 195999 ms than those from before the pandemic where there is less variance, which means how close data points are to their mean/average value, and there are more songs with duration of about 216286 ms. @fig-track-duration-boxplot, @tbl-track-duration-stats-during-after, and @tbl-track-duration-stats-before also show that hit songs during and after the pandemic are shorter in length of average with a mean track duration of 195999 ms compared to hit songs from before the the pandemic with a mean track duration of 216286 ms.
 
 \newpage
 
 ### Loudness
-
 ```{r}
 #| label: fig-loudness-scatterplot
-#| fig-cap: Relationship between the hit year and loudness of a song 
+#| fig-cap: "Relationship between the hit year and loudness of a song (in dB) on Billboard's Year-End Hot 100 singles list. Songs from the same year are grouped in the same colour and the horizontal, dashed line divides the hit tracks before 2020 and hit tracks from 2020 and beyond. Blue, smoother line describes the overall trend and relationship between hit year and loudness." 
 #| echo: false
 #| warning: false
 #| message: false
 
 playlist_analysis_data |> 
-  ggplot(aes(x = hit_year, y = loudness)) +
+  ggplot(aes(x = hit_year, y = loudness, color = hit_year)) +
   geom_smooth() +
   geom_jitter() +  # So we can see all points
   geom_point(alpha = 0.3) +
   theme_minimal() +
   labs(x = "Hit year",
-       y = "Loudness of song (in dB)")
+       y = "Loudness of song (in dB)") + 
+  geom_vline(xintercept = 2020, linetype = "dashed") +
+  scale_color_gradient(low = "#3E509A", high = "#e85569", guide = "none")
 ```
 ```{r}
 #| label: fig-loudness-hist
-#| fig-cap: Distribution of loudness (in dB) before 2020 versus during and after 2020  
+#| fig-cap: "Distribution of loudness (in dB) of hit songs before 2020 (the pandemic) versus during and after 2020 (the pandemic) from Billboard's Year-End Hot 100 list"
 #| echo: false
 #| warning: false
 #| message: false
@@ -378,7 +369,7 @@ playlist_analysis_data |>
 
 ```{r}
 #| label: tbl-loudness-stats-before
-#| tbl-cap: Minimum, quartiles, median, and maximum of loudness of song (in dB) before 2020
+#| tbl-cap: "Minimum, quartiles, median, and maximum of loudness of song (in dB) before 2020 (the pandemic) on Billboard's Year-End Hot 100 list"
 #| echo: false
 #| warning: false
 #| message: false
@@ -398,7 +389,7 @@ playlist_analysis_data |>
 
 ```{r}
 #| label: tbl-loudness-stats-during-after
-#| tbl-cap: Minimum, quartiles, median, and maximum of loudness of song (in dB) during and after 2020
+#| tbl-cap: "Minimum, quartiles, median, and maximum of loudness of song (in dB) during and after 2020 (the pandemic) on Billboard's Year-End Hot 100 list"
 #| echo: false
 #| warning: false
 #| message: false
@@ -415,6 +406,7 @@ playlist_analysis_data |>
   summary() |>
   kable()
 ```
+@fig-loudness-scatterplot shows that from 2014 to 2023, there was a decrease in loudness overall with hit songs as see with the negative slope of the blue, smoother line. @fig-loudness-hist reveals that the distribution of top songs' loudness is left-skewed with the loudness of top songs from during and after the pandemic being more disperse than those before the pandemic around their mean. This suggests that top songs from 2020 onwards varied more in terms of their loudness when compared with top songs before 2020. @tbl-loudness-stats-before and @tbl-loudness-stats-during-after shows that before the pandemic, top songs on Billboard's list had a mean loudness of -5.964 dB while during and after the pandemic, it had a mean loudness of -6.516 dB. This indicates that hit songs during and after the pandemic are less louder than hit songs before the pandemic. 
 \newpage
 
 ### Tempo
@@ -492,6 +484,13 @@ playlist_analysis_data |>
   kable()
 ```
 
+
+
+
+
+
+
+
 \newpage
 
 
@@ -531,6 +530,8 @@ modelplot(hit_song_model_results, conf_level = 0.9) +
 # Discussion {#sec-discussion}
 
 [To Do]
+
+Weakness: There were more songs available prior to 2020 in our dataset. This could have impacted the model. 
 
 \newpage
 
