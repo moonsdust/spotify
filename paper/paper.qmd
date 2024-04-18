@@ -95,7 +95,7 @@ y_i|\pi_i &\sim \mbox{Bern}(\pi_i) \\
 \beta_4 &\sim \mbox{Normal}(0, 2.5) \\
 \end{align*}
 
-We define $y_i$ to be a top song, which if it is 1 represents a top song prior to 2020 and 0 if it is a top song from 2020 onwards. $\pi_i$ is the probability that a top song $i$ is a top song prior to 2020. Let $\mbox{duration}_i$ be the duration of the top song in milliseconds (ms) and $\mbox{loudness}_i$ to be the mean loudness of a top song in decibels (dB). Set $\mbox{tempo}_i$ to be the mean beats per minutes (BPM) of a top song and $\mbox{modality}_i$ to be the modality of the top song, where 1 means the melody of the song is in a minor key and 0 if it is in a major key. 
+We define $y_i$ to be a top song $i$, which if it is 1 represents a top song prior to 2020 and 0 if it is a top song from 2020 onwards. $\pi_i$ is the probability of a top song being a hit prior to 2020. Following this, $\mbox{logit}(\pi_i)$ is the log odds of a top song $i$ being a top song prior to 2020. Let $\mbox{duration}_i$ be the duration of the top song in milliseconds (ms) and $\mbox{loudness}_i$ to be the mean loudness of a top song in decibels (dB). Set $\mbox{tempo}_i$ to be the mean beats per minutes (BPM) of a top song and $\mbox{modality}_i$ to be the modality of the top song, where 1 means the melody of the song is in a minor key and 0 if it is in a major key. $\beta_0$ is the intercept that represents the log odds when all predictor variables are 0. $\beta_1$ is the coefficient that signifies the log odds of a song being a hit song prior to 2020 when the $\mbox{duration}_i$ changes by 1 ms. $\beta_2$ is the coefficient that stands for the log odds of a song being a hit song prior to 2020 when $\mbox{loudness}_i$ changes by 1 dB. $\beta_3$ and $\beta_4$ both represent the log odds of a song being a hit song prior to 2020 when $\mbox{tempo}_i$ and $\mbox{modality}_i$ changes, respectively.
 
 We ran the model using the rstanarm package [@citerstanarm] and R [@citeR] with the default priors from the rstanarm package. Diagnostics related to the model such as a trace plot, Rhat plot, and posterior predictive check can be found at @sec-appendix.
 
@@ -148,6 +148,8 @@ plot.new()
 rasterImage(the_image, 0, 0, 0.8, 1.13)
 ```
 A logistic regression model was chosen because our outcome variable, if the song is a top song prior to 2020, is a binary outcome. However, alternative models were considered. Multiple linear regression model was a candidate for our model since the model has multiple predictor variables but it assumes that the outcome is continuous instead of discrete. Other regression models like negative binomial regression were not chosen since we are not dealing with discrete counts for the outcome but instead discrete binary values of 1 and 0. Our logistic regression model describes the following causal relationship (@fig-causal-model) where song characteristics predicts whatever a hit song was made prior to 2020, excluding a confounding variable, lyrics. The assumption we make is that there is a relationship between song characteristics and a top song being a hit prior to 2020. In @fig-causal-model, the reason lyrics, if there are any, is a confounding variable is because lyrics can affect not only if the song was a hit prior to 2020 but also song characteristics from the way the lyrics are performed. However, we are unable to observe the effects of lyrics directly with our data. Weakness and further improvements to the model are discussed in @sec-discussion. 
+
+\newpage
 
 # Results {#sec-results}
 In this section, we visualized our data through graphs and tables as well as present the results from our model. 
@@ -202,8 +204,6 @@ proportion_of_each_mode |>
     ) |>
   kable()
 ```
-@fig-mode-bar and @tbl-mode-table reveals that a proportion of hit songs before and during and after 2020 that had melodies in a major key was around ~60% (61% before 2020 and 63% from 2020 onwards). Songs in a minor key made up about 40% or less of songs (39% before 2020 and 37% from 2020 onwards) from 2014 to 2023 on Billboard's Year-End Hot 100 singles list. There was a slight increase in songs in a major key from 2020 afterwards however songs in a major key making up a majority of Billboard's Year-End Hot 100 singles stayed consist before 2020 and 2020 onwards. 
-
 ```{r}
 #| label: fig-key-mode-bar
 #| fig-cap: "Proportion of songs in different scales before 2020 (the pandemic) versus during and after 2020 (the pandemic) from Billboard's Year-End Hot 100 singles"
@@ -234,8 +234,9 @@ proportion_of_each_key_mode |>
        y = "Proportion") + 
   theme(axis.text.x = element_text(angle = 90))
 ```
-When looking into the specific scales of the songs, @fig-key-mode-bar and @tbl-scale-table shows that there was an increase in songs in C major during and after 2020 with C major and C# major made up a majority of songs from Billboard's list from 2020 onwards at approximately 9% each. Prior to 2020, the proportion of songs in C major were at 11% however there was a decline in songs in C major after the start of the pandemic. There was a decline in songs in G# major from 8% of the list to 6% of the list as well as a an increase in songs in D minor and D# minor from less than 1% of the list to 2% each. There were also a decline in songs in F minor where they would make up 6% of Billboard's list prior to 2020 to 4% during and after 2020. 
+@fig-mode-bar and @tbl-mode-table reveals that a proportion of hit songs before and during and after 2020 that had melodies in a major key was around ~60% (61% before 2020 and 63% from 2020 onwards). Songs in a minor key made up about 40% or less of songs (39% before 2020 and 37% from 2020 onwards) from 2014 to 2023 on Billboard's Year-End Hot 100 singles list. There was a slight increase in songs in a major key from 2020 afterwards however songs in a major key making up a majority of Billboard's Year-End Hot 100 singles stayed consist before 2020 and 2020 onwards.
 
+When looking into the specific scales of the songs, @fig-key-mode-bar and @tbl-scale-table shows that there was an increase in songs in C major during and after 2020 with C major and C# major made up a majority of songs from Billboard's list from 2020 onwards at approximately 9% each. Prior to 2020, the proportion of songs in C major were at 11% however there was a decline in songs in C major after the start of the pandemic. There was a decline in songs in G# major from 8% of the list to 6% of the list as well as a an increase in songs in D minor and D# minor from less than 1% of the list to 2% each. There were also a decline in songs in F minor where they would make up 6% of Billboard's list prior to 2020 to 4% during and after 2020.
 \newpage
 
 ### Track Duration
@@ -269,22 +270,6 @@ playlist_analysis_data |>
   ggplot(mapping = aes(x = track_duration_ms)) +
   facet_wrap(facets = vars(period), dir = "v") + 
   geom_histogram(binwidth = 7000, fill="#e85569") +
-  theme_minimal() +
-  labs(x = "Duration of song (in ms)",
-       y = "Count")
-```
-
-```{r}
-#| label: fig-track-duration-boxplot
-#| fig-cap: "Track duration (in ms) before 2020 (the pandemic) versus during and after 2020 (the pandemic) from songs on Billboard's Year-End Hot 100 singles list."
-#| echo: false
-#| warning: false
-#| message: false
-
-playlist_analysis_data |> 
-  ggplot(mapping = aes(x = track_duration_ms)) +
-  facet_wrap(facets = vars(period), dir = "v") + 
-  geom_boxplot() +
   theme_minimal() +
   labs(x = "Duration of song (in ms)",
        y = "Count")
@@ -328,7 +313,7 @@ playlist_analysis_data |>
   summary() |>
   kable()
 ```
-@fig-track-duration-scatterplot reveals that songs over the years from 2014 to 2020 decreased slightly in duration and from 2020 onwards, there was almost no change in trend overall based on the blue, smoother line. @fig-track-duration-hist shows that the distribution for top songs before the pandemic and during and after the pandemic are skewed to the right. According to  @tbl-track-duration-stats-during-after and @tbl-track-duration-stats-before, the distribution of top songs during and after the pandemic are more disperse around their mean of 195999 ms than those from before the pandemic where there is less variance, which means how close data points are to their mean/average value. Based on the distribution, there are more songs with duration of about 216286 ms for top songs before the pandemic. @fig-track-duration-boxplot, @tbl-track-duration-stats-during-after, and @tbl-track-duration-stats-before also show that hit songs during and after the pandemic are shorter in length on average with a mean track duration of 195999 ms compared to hit songs from before the the pandemic with a mean track duration of 216286 ms. The median (the middle value of the data when sorted) track duration also decreased from 214070 ms before 2020 to 195120 ms for 2020 onwards.
+@fig-track-duration-scatterplot reveals that songs over the years from 2014 to 2020 decreased slightly in duration and from 2020 onwards, there was almost no change in trend overall based on the blue, smoother line. @fig-track-duration-hist shows that the distribution for top songs before the pandemic and during and after the pandemic are skewed to the right. According to  @tbl-track-duration-stats-during-after and @tbl-track-duration-stats-before, the distribution of top songs during and after the pandemic are more disperse around their mean of 195999 ms than those from before the pandemic where there is less variance, which means how close data points are to their mean/average value. Based on the distribution, there are more songs with duration of about 216286 ms for top songs before the pandemic. @tbl-track-duration-stats-during-after and @tbl-track-duration-stats-before also show that hit songs during and after the pandemic are shorter in length on average with a mean track duration of 195999 ms compared to hit songs from before the the pandemic with a mean track duration of 216286 ms. The median (the middle value of the data when sorted) track duration also decreased from 214070 ms before 2020 to 195120 ms for 2020 onwards.
 
 
 ### Loudness
@@ -403,6 +388,7 @@ playlist_analysis_data |>
   kable()
 ```
 @fig-loudness-scatterplot shows that from 2014 to 2023, there was a decrease in loudness overall with hit songs as see with the negative slope of the blue, smoother line. @fig-loudness-hist reveals that the distribution of top songs' loudness is left-skewed with the loudness of top songs from during and after the pandemic being more disperse than those before the pandemic around their mean. This suggests that top songs from 2020 onwards varied more in terms of their loudness when compared with top songs before 2020. @tbl-loudness-stats-before and @tbl-loudness-stats-during-after shows that before the pandemic, top songs on Billboard's list had a mean loudness of -5.964 dB while during and after the pandemic, it had a mean loudness of -6.516 dB. The median loudness of top tracks has also decrease from -5.700 dB prior to the pandemic to -6.151 dB during and after the pandemic. This indicates that hit songs during and after the pandemic are less louder than hit songs before the pandemic. 
+\newpage
 
 ### Tempo
 ```{r}
@@ -481,13 +467,13 @@ playlist_analysis_data |>
 \newpage
 ## Model Results
 
-@tbl-model-result and @fig-model-result-ci shows the results of our logistic regression model. @tbl-model-result shows the coefficient estimates obtained for our model with their mean absolute deviation (MAD) while @fig-model-result-ci showcases the coefficient estimates (the dot) alongside their 90% credible interval (the line). Coefficient estimates represents....[@citecoefficientsdef]. Mean absolute deviation is....
+@tbl-model-result and @fig-model-result-ci shows the results of our logistic regression model. @tbl-model-result presents the coefficient estimates obtained for our model with their mean absolute deviation (MAD) while @fig-model-result-ci showcases the coefficient estimates (the dot) alongside their 90% credible interval (the line). Coefficient estimates represents the change in the log odds of a song being a hit song prior to 2020 when one predictor variable changes by 1 unit as the other predictors stays constant [@citecoefficientsdef]. With the given data, the 90% credible interval is an interval where the true value of our coefficient estimate has a 90% probability of lying within [@citebayesiandef]. Mean absolute deviation is the average distance of a data point representing a hit song and the mean.
 
-@tbl-model-result indicates that the y-intercept is -2.002, this however has no meaning in this situation since we only have two outcomes, 0 and 1 to represent a hit song from 2020 onwards and a hit song prior to 2020, respectively. @tbl-model-result and @fig-model-result-ci reveal that the coefficient of track duration is 0.000 when tempo, mode, and loudness remains constant and its credible interval....... [The credible interval means.......] This indicates there is no relationship between a song being a hit before 2020 and the duration of the song. 
+@tbl-model-result indicates that the intercept $\beta_0$ is -2.002. This means that songs in a major key with tempo, loudness, and mode being 0 is less likely to be a top song before 2020. @tbl-model-result and @fig-model-result-ci reveal that the coefficient of track duration is 0.000 when tempo, mode, and loudness remains constant and its 90% credible interval includes the value 0. This suggest that when the duration of the song changes the likelihood of a song being a top song prior to 2020 does not change or is impacted. When loudness varies and track duration, tempo, and mode stays fixed, @tbl-model-result indicates that its coefficient is 0.148 with a 90% credible interval above 0 as seen in @fig-model-result-ci. As the coefficient estimate is positive, it means that hit songs that are louder are more likely to be a hit song prior to 2020. Since the coefficient estimate for tempo is −0.002 and its 90% credible interval being slightly below 0 when only tempo varies, it means songs with slower tempos are less likely to be a hit song prior to 2020. The coefficient estimate for the modality/mode is 0.095 and its 90% credible interval being wider suggests that top songs that are in a minor key are likely to be a hit before 2020. However, the true value for the coefficient for mode can also be negative according to @fig-model-result-ci since the interval passes through 0. 
 
 ```{r}
 #| label: tbl-model-result
-#| tbl-cap: Relationships of a hit song is a hit before 2020 / the pandemic with its tempo, song duration, loudness, and modality with their mean absolute deviation (MAD) values in parenthesis. 
+#| tbl-cap: Relationships of a hit song being a hit before 2020 / the pandemic with its tempo, song duration, loudness, and modality (mode) with their mean absolute deviation (MAD) values in parenthesis.
 #| echo: false
 #| warning: false
 #| message: false
@@ -516,7 +502,7 @@ modelplot(hit_song_model_results, conf_level = 0.9) +
 
 [To Do]
 
-Weakness: There were more songs available prior to 2020 in our dataset. This could have impacted the model. 
+Weakness: There were more songs available prior to 2020 in our dataset. This could have impacted the model and the coefficient estimates seen. 
 
 \newpage
 
