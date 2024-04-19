@@ -38,12 +38,6 @@ stopifnot(
   analysis_data$loudness |> min() >= -60,
   # 8. loudness has a max number that is less than or equal to 0
   analysis_data$loudness |> max() <= 0,
-  # 9. Check valence is numeric
-  # (OLD) class(analysis_data$valence) == "numeric",
-  # 10. valence has a min number that is equal or greater than 0.0
-  # (OLD) analysis_data$valence |> min() >= 0.0,
-  # 11. valence has a max number that is less than or equal to 1.0
-  # (OLD) analysis_data$valence |> max() <= 1.0,
   # 12. track_duration_ms is numeric
   class(analysis_data$track_duration_ms) == "numeric",
   # 13. track_duration_ms has a min number that is greater than 0

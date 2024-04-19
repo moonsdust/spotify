@@ -24,13 +24,8 @@ simulated_data <-
                             2022, 2023), size = num_of_top_songs,
                       replace = TRUE),
     track_duration_ms = round(runif(num_of_top_songs, min = 0, max = 10000000)),
-    # (OLD) track_popularity = round(runif(n = num_of_top_songs, min = 0,
-    # max = 100)),
-    # (OLD) energy = round(runif(n = num_of_top_songs, min = 0, max = 1),
-    # 1),
     tempo = runif(n = num_of_top_songs, min = 1, max = 10000000),
     loudness = runif(n = num_of_top_songs, min = -60, max = 0),
-    # (OLD) valence = round(runif(n = num_of_top_songs, min = 0, max = 1), 1),
     mode_name = sample(x = c("minor", "major"), size = num_of_top_songs, replace
                        = TRUE),
     key_mode = sample(x = c("F minor", "F# major", "G# major", "A# minor",
@@ -56,12 +51,6 @@ stopifnot(
   simulated_data$hit_year |> sort() |> unique() == c(2014, 2015, 2016, 2017,
                                                      2018, 2019, 2020, 2021,
                                                      2022, 2023),
-  # 3. Check that track_popularity is numeric
-  # (OLD) class(simulated_data$track_popularity) == "numeric",
-  # 4. track_popularity has a min number that is equal or greater than 0
-  # (OLD) simulated_data$track_popularity |> min() >= 0,
-  # 5. track_popularity has a max number that is less than or equal to 100
-  # (OLD) simulated_data$track_popularity |> max() <= 100,
   # 6. Check tempo is numeric
   class(simulated_data$tempo) == "numeric",
   # 7. tempo has a min number that is greater than 0
@@ -74,12 +63,6 @@ stopifnot(
   simulated_data$loudness |> min() >= -60,
   # 11. loudness has a max number that is less than or equal to 0
   simulated_data$loudness |> max() <= 0,
-  # 12. Check valence is numeric
-  # (OLD) class(simulated_data$valence) == "numeric",
-  # 13. valence has a min number that is equal or greater than 0.0
-  # (OLD) simulated_data$valence |> min() >= 0.0,
-  # 14. valence has a max number that is less than or equal to 1.0
-  # (OLD) simulated_data$valence |> max() <= 1.0,
   # 15. track_duration_ms is numeric
   class(simulated_data$track_duration_ms) == "numeric",
   # 16. track_duration_ms has a min number that is greater than 0
