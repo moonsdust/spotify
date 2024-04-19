@@ -97,10 +97,10 @@ We define $y_i$ to be a top song $i$, which if it is 1 represents a top song bef
 
 We ran the model using the rstanarm package [@citerstanarm] and R [@citeR] with the default priors from the rstanarm package. Diagnostics related to the model such as a trace plot, Rhat plot, and posterior predictive check can be found at @sec-appendix.
 
-### Model justification
+## Model justification
 ```{r}
 #| label: fig-causal-model
-#| fig-cap: Causal relationship between song characteristics and hit song (before 2020 or during and after 2020)
+#| fig-cap: Causal relationship between song characteristics and hit song before 2020
 #| echo: false
 #| warning: false
 #| message: false
@@ -110,7 +110,7 @@ causal_model <- "digraph {
   graph []
   # Nodes
   node [shape = plaintext]
-    A [label = 'Hit song before 2020 or during and after 2020']
+    A [label = 'Hit song before 2020']
     B [label = 'Modality']
     C [label = 'Loudness']
     D [label = 'Duration']
