@@ -73,7 +73,9 @@ ui <- fluidPage(
 # Define server logic
 server <- function(input, output) {
   # Referenced https://stackoverflow.com/questions/38090443/how-to-get-choices
-  # -values-of-selectinput-in-shiny
+  # -values-of-selectinput-in-shiny and
+  # https://stackoverflow.com/questions/38917101/how-do-i-show-the-y-value-
+  # on-tooltip-while-hover-in-ggplot2
   output$curr_plot <- renderPlotly({
     # Scale Plot
     if (input$the_choice == "Scale and Modality") {

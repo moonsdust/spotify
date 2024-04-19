@@ -5,7 +5,7 @@ author: Emily Su
 thanks: "Code and data are available at: https://github.com/moonsdust/top-songs."
 date: today
 date-format: long
-abstract: "Music often reflects the current climate of society and there is a growing interest in how hit songs as seen on Billboard's Year-End Hot 100 singles has changed after the COVID-19 pandemic. This paper looks at music characteristics such as tempo, song duration, loudness, and modality of songs from Billboard's Year-End Hot 100 singles list from 2014 to 2023 to reveal patterns and relationships to explain the difference between top songs before 2020 and 2020 onwards. The results show that hit songs from 2020 onwards had become on average quieter but slightly faster with our model revealing that duration does not impact likelihood of a song being a hit prior to 2020 but songs in a minor key were more likely to be a hit before 2020. These results can support the evaluation of the emotional state of different populations and improve treatments such as music therapy, however further investigation is needed on the influence of lyrics on different music characteristics."
+abstract: "Music often reflects the current climate of society and there is a growing interest in how hit songs as seen on Billboard's Year-End Hot 100 singles has changed after the COVID-19 pandemic. This paper looks at music characteristics such as tempo, song duration, loudness, and modality of songs from Billboard's Year-End Hot 100 singles list from 2014 to 2023 to reveal patterns and relationships to explain the difference between top songs before 2020 and 2020 onwards. The results show that hit songs from 2020 onwards had become on average quieter but slightly faster with our model revealing that duration does not impact the likelihood of a song being a hit prior to 2020 but songs in a minor key were more likely to be a hit before 2020. These results can support the evaluation of the emotional state of different populations and improve treatments such as music therapy, however further investigation is needed on the influence of lyrics on different music characteristics."
 format:
   pdf:
     toc: true
@@ -82,7 +82,7 @@ The variables constructed from the raw dataset are before_pandemic, period, hit_
 As seen in @tbl-dataset-preview, there are multiple columns however our main variables of interests are before_pandemic, track_duration_ms, loudness, tempo, and mode_name for our model. The major and minor columns were used initially to visualize potential relationships between variables as seen in @fig-correlation-matrix. period, hit_year, and key_mode were used to visualize our data prior to training our model and to understand the data.  
 
 # Model {#sec-model}
-From our analysis of the data, we observed that there were trends between a song's duration, loudness, tempo, and modality for top songs prior 2020 and 2020 onwards. We are interested in investigating if a song is likely to be a top song prior to 2020 or not based on what we know about the duration, loudness, tempo, and modality of a top song. We will do this by creating a model. 
+From our analysis of the data, we observed that there were trends between a song's duration, loudness, tempo, and modality for top songs prior 2020 and 2020 onwards. We are interested in investigating if a song is likely to be a top song prior to 2020 on what we know about the duration, loudness, tempo, and modality of a top song. We will do this by creating a model. Understanding characteristics of songs before 2020 will help us not only understand what made songs hits before the pandemic but also reflect on what makes a song less likely to be a hit before 2020 and instead more likely to be a hit from 2020 onwards.
 
 ## Model set-up
 In order to predict a top song was a hit prior to 2020, we will make the assumption that there is a relationship between the outcome variable, if the song is a top song prior to 2020 and our variables of interests: duration, loudness, tempo, and modality. Our variables of interests will be the predictor variables for the model. We will define our model as a logistic regression model with a Bayesian approach as follows:
@@ -153,7 +153,7 @@ A logistic regression model was chosen because our outcome variable, if the song
 # Results {#sec-results}
 In this section, we visualized our data through graphs and tables as well as present the results from our model. 
 
-## Difference in song characteristics before 2020 (the pandemic) and during and after 2020 (the pandemic) of songs from the Billboard Year-End Hot 100 singles
+## Difference in song characteristics before 2020 (the pandemic) and during and after 2020 (the pandemic) of songs from Billboard's Year-End Hot 100 singles list
 
 ### Scale and Modality
 ```{r}
@@ -249,7 +249,7 @@ proportion_of_each_key_mode |>
 When looking into the specific scales of the songs, @fig-key-mode-bar and @tbl-scale-table shows that there was an increase in songs in C major during and after 2020 with C major and C# major made up a majority of songs from Billboard's list from 2020 onwards at approximately 9% each. Prior to 2020, the proportion of songs in C major were at 11% however there was a decline in songs in C major after the start of the pandemic. There was a decline in songs in G# major from 8% of the list to 6% of the list as well as a an increase in songs in D minor and D# minor from less than 1% of the list to 2% each. There were also a decline in songs in F minor where they would make up 6% of Billboard's list prior to 2020 to 4% during and after 2020.
 \newpage
 
-### Track Duration
+### Track Duration {#sec-track-duration}
 ```{r}
 #| label: fig-track-duration-scatterplot
 #| fig-cap: "Relationship between the hit year and track duration of a song (in ms) on Billboard's Year-End Hot 100 singles list. Songs from the same year are grouped in the same colour and the horizontal, dashed line divides the hit tracks before 2020 and hit tracks from 2020 and beyond. Blue, smoother line describes the overall trend and relationship between hit year and track duration."
@@ -332,7 +332,7 @@ playlist_analysis_data |>
 @fig-track-duration-scatterplot reveals that songs over the years from 2014 to 2020 decreased slightly in duration and from 2020 onwards, there was almost no change in trend overall based on the blue, smoother line. @fig-track-duration-hist shows that the distribution for top songs before the pandemic and during and after the pandemic are skewed to the right. According to  @tbl-track-duration-stats-during-after and @tbl-track-duration-stats-before, the distribution of top songs during and after the pandemic are more disperse around their mean of 195999 ms than those from before the pandemic where there is less variance, which means how close data points are to their mean/average value. Based on the distribution, there are more songs with duration of about 216286 ms for top songs before the pandemic. @tbl-track-duration-stats-during-after and @tbl-track-duration-stats-before also show that hit songs during and after the pandemic are shorter in length on average with a mean track duration of 195999 ms compared to hit songs from before the the pandemic with a mean track duration of 216286 ms. The median (the middle value of the data when sorted) track duration also decreased from 214070 ms before 2020 to 195120 ms for 2020 onwards.
 
 
-### Loudness
+### Loudness {#sec-loudness}
 ```{r}
 #| label: fig-loudness-scatterplot
 #| fig-cap: "Relationship between the hit year and loudness of a song (in dB) on Billboard's Year-End Hot 100 singles list. Songs from the same year are grouped in the same colour and the horizontal, dashed line divides the hit tracks before 2020 and hit tracks from 2020 and beyond. Blue, smoother line describes the overall trend and relationship between hit year and loudness."
@@ -418,7 +418,7 @@ playlist_analysis_data |>
 @fig-loudness-scatterplot shows that from 2014 to 2023, there was a decrease in loudness overall with hit songs as see with the negative slope of the blue, smoother line. @fig-loudness-hist reveals that the distribution of top songs' loudness is left-skewed with the loudness of top songs from during and after the pandemic being more disperse than those before the pandemic around their mean. This suggests that top songs from 2020 onwards varied more in terms of their loudness when compared with top songs before 2020. @tbl-loudness-stats-before and @tbl-loudness-stats-during-after shows that before the pandemic, top songs on Billboard's list had a mean loudness of -5.964 dB while during and after the pandemic, it had a mean loudness of -6.516 dB. The median loudness of top tracks has also decrease from -5.700 dB prior to the pandemic to -6.151 dB during and after the pandemic. This indicates that hit songs during and after the pandemic are less louder than hit songs before the pandemic. 
 \newpage
 
-### Tempo
+### Tempo {#sec-tempo}
 ```{r}
 #| label: fig-tempo-scatterplot
 #| fig-cap: "Relationship between the hit year and tempo of a song (the beats per minutes (BPM) of a song) on Billboard's Year-End Hot 100 singles list. Songs from the same year are grouped in the same colour and the horizontal, dashed line divides the hit tracks before 2020 and hit tracks from 2020 and beyond. Blue, smoother line describes the overall trend and relationship between hit year and tempo."
@@ -543,25 +543,27 @@ modelplot(hit_song_model_results, conf_level = 0.9) +
 \newpage
 
 # Discussion {#sec-discussion}
-TO REMOVE:
-- What is done in this paper?
-- What is something that we learn about the world? What is another thing that we learn about the world? (connect back to the real world and explain what the results could mean & explain the implications of our results)
-- What are some weaknesses of what was done? (potential areas of improvement for the paper)
-- What is left to learn or how should we proceed in the future? (suggestions for future works)
+An overview that was done is that in @sec-results, we did preliminary analysis of the data we obtained from playlists from Spotify by graphing the relationships between song characteristics and other variables in the dataset such as hit year. We also introduced our logistic regression model in a Bayesian framework for top songs prior to 2020 where their results were shown in @sec-model-results.
 
-An overview that was done is that we did preliminary analysis of data by graphing relationship between song characteristics and other variables in the dataset such as hit year as seen in @sec-results. We also introduced our logistic regression model in a Bayesian framework for top songs prior to 2020 where their results were shown in @sec-model-results.
+## Songs in a minor key are more likely to be a hit before the pandemic and less so during and after the pandemic 
+From @sec-results, we found that when analyzing the data initially, there were more songs that were in a minor key prior to the pandemic than during it and after it. This is also seen in our model result @sec-model-results where it showed that songs in a minor key were more likely a hit before 2020. This suggest that songs that are in a minor key are less likely to be a hit during and after the pandemic. We also saw from @fig-key-mode-bar there being a decline in songs in different minor scales such as F minor, which made up 6% of Billboard's list before 2020 to 4%. There was also an increase in songs in C major with C major and C# major being about equally the most popular scales while before 2020, only songs in C# major were the most popular. Music keys can be linked to specific emotions or experiences and it was a common practice to before the 20th century. In Christian Schubart's *Ideen zu einer Aesthetik der Tonkunst*, he describes the emotional characteristics of each key [@citescaleemotion]. When we apply @citescaleemotion's descriptions to songs in the 21st century, C major is described to be simple and innocent and F minor is described to be experiencing a "deep depression" and "longing for the grave". @citescaleemotion tends to describe minor keys as more somber while major keys tend to be described as more cheerful. Major keys like C major may make people feel nostalgic or joy when listening to the music and therefore there it became one of the most popular key for hit songs to be in after the pandemic. From @sec-model-results, @fig-mode-bar, @fig-key-mode-bar, songs in minor keys like F minors are more popular before the pandemic and less so after the start of the pandemic. The decline in hit songs being in F minor indicates that people tend to not listen to sadder-sounding songs during the pandemic onwards compared to before 2020. These results indicates that people during pandemic had a preference for music that was more cheerful. 
 
+## Louder and slower songs are more likely to be hits before the pandemic
+Our model in @sec-model-results reveal that louder and slower songs are more likely to be hits before the pandemic. While according to @sec-tempo and @sec-loudness, songs that are quieter and faster were on average hits during and after the pandemic. In a study conducted by @citeemotionalresponses, they found that louder music and faster tempo can trigger responses associated with survival responses like increased heart rate. This suggest that popular songs from 2014 to 2023 are overall balanced with the emotional response they evoke in listeners in terms of loudness and tempo so that it does not cause too much anxiety in listeners or is too calming.
 
-
-
-
-
+## Duration of the song does not impact the likelihood of a song being a hit before the pandemic but top songs during and after the pandemic are shorter
+In terms of the duration of the song, our model @sec-model-results suggested that duration of the song does not impact how likely a song being a hit before 2020. When looking at @sec-track-duration, top songs after 2019 had on average duration. This indicates that prior to 2020, duration of the hit song did not impact it being more likely being a hit song on Billboard's Year-End Hot 100 list. However when comparing the track duration of top songs from the two periods, before 2020 and 2020 onwards, top songs are shorter on average during and after 2020. During 2020, TikTok experienced its largest number of downloads of around 315 millions download indicating its rise in popularity during the pandemic [@citetiktokstats]. Videos on the platform are often set to sound clips or snippets from a song and songs that were trending on the platform through dance challenges for example gained popularity outside of TikTok through streaming sites. Often catchy songs would gain popularity on TikTok and that the shorter the song is the more replays it would get. This could have impacted what songs became popular as well as how long newer songs created after 2019 are. However based on our model, prior to 2020, duration did not impact a song's popularity. 
 
 ## Areas of improvement
+The analysis was faced with several limitations. While creating the dataset, we obtained more songs before 2020 in order to have more observations. This is a trade-off for having a more accurate dataset for the model over a dataset that is balanced between the two groups we were observing, which is before the pandemic and during and after the pandemic. 
 
-There were more songs available prior to 2020 in our dataset. This could have impacted the model and the coefficient estimates seen. 
+Another limitation of our analysis is that the Billboard list itself. Since the list also comprises of the year before, for songs on the list that hit their peak popularity from December 2019 to beginning of 2020 before the pandemic started, they might not have representative of the potential changes in terms of song characteristics of songs that become popular after the pandemic started. Human error could have occurred when adding music to the playlists we used based on the Billboard Year-End Hot 100 lists where the wrong song could have been added into the playlist for example. 
+
+As seen in @fig-causal-model, lyrics is a confounding variable in our model since it can influence the song characteristics in our model and also impact the likelihood of the model's outcome, which was if a top song is a hit before 2020 or not. Since we were not able to directly analyze lyrics in our analysis or incorporate it in our model, this could have impacted the model and the coefficient estimates seen. 
 
 ## Next steps 
+
+Results from the analysis can be used to understand the emotional state of different populations before and after pandemic and assist with how music therapy can be further improved. For instance, music therapists could choose or suggests their patients to play songs in specific keys like C major during treatment. Further investigations could be conducted on how lyrics impact song characteristics and also how lyrics could impact the popularity of songs. 
 
 \newpage
 
@@ -598,7 +600,7 @@ rstanarm::pp_check(hit_song_model_results) +
   theme_minimal() +
   theme(legend.position = "bottom")
 ```
-
+\newpage
 ## Diagnostics for model {#sec-model-details-diagnostics}
 @fig-convergencecheck shows that the sampling algorithm used, the Markov chain Monte Carlo (MCMC) algorithm, did not run into issues as the posterior distribution for the model was created. Using the checks presented by @citetellingstorieswithdata, both graphs do not show anything abnormal since the lines in the trace plot fluctuates a lot horizontally and all coefficients are close to 1 and less than 1.1 in the rhat plot.
 ```{r}
