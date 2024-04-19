@@ -5,6 +5,7 @@
 # Contact: em.su@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: -
+# NOTE: This script was checked through lintr for styling
 
 #### Workspace setup ####
 ## Installing packages (only needs to be done once per computer)
@@ -23,6 +24,7 @@ install.packages("styler") # To style code
 # For app
 install.packages("shiny")
 install.packages("shinyWidgets")
+install.packages("plotly")
 
 # For models
 install.packages("DiagrammeR")
