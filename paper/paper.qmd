@@ -33,7 +33,7 @@ library(magrittr)
 library(DiagrammeRsvg)
 library(png)
 
-# Read in data 
+# Read in data
 playlist_analysis_data <- read_parquet("../data/analysis_data/playlists_analysis_data.parquet")
 
 hit_song_model_results <- readRDS("../models/hit_song_model.rds")
@@ -46,13 +46,13 @@ During the COVID-19 pandemic, viral songs on social media sites such as TikTok w
 
 In this paper, to investigate patterns and trends in music, we analyzed data from the Billboard Year-End Hot 100 singles list from 2014 to 2023 on music characteristics such as its modality (major or minor key), track duration, loudness, and tempo. Our estimand is the song characteristics from the Billboard Year-End Hot 100 singles such as its modality (major or minor), track duration, loudness, and tempo if a song was created before 2020 or during and after 2020. The list allowed us to gauge how preference in music characteristics has changed overall during and after the pandemic. Current studies give us a sense of how currently people are feeling based on surveys done. However, there is currently a lack of understanding and focus on the difference in musical characteristics of popular songs with the general population before the pandemic and during and after it. In our findings, our data showed that songs in a major key made up the majority of top songs before, during, and after 2020 and top songs were on average quieter, shorter, and had slightly faster tempos during and after 2020. In our model, it revealed that top songs prior to 2020 are more likely to be louder, slower, and if its in a minor key, its more likely to be a hit song before 2020. However, duration did not impact the likelihood in our model. Music can reflect the climate of society and understanding trends in music characteristics of hit songs can help provide insight on the overall feelings of different populations during and after the pandemic as well as before it. This can aid in improving treatments such as music therapy.
 
-In the rest of this paper, the data section (@sec-data) will cover the dataset used, how it was obtained, define the variables of interest that are used by our tables and graphs, and briefly explain the data cleaning process. The model section (@sec-model) will explain our proposed causal model, which would explain potential relationships in our data, the setup of our model to understand these relationships, and justification for our model. In the results section (@sec-results), we will reveal tables and graphs made on our datasets, explain what they show, and show our results from our model. In the discussion section (@sec-discussion), we will connect back to the real world and explain what the results could mean, the implications of our results, potential areas of improvement for the paper, and suggestions for future works. Finally, the appendix section (@sec-appendix) will extra tables and graphs from our results as well, as additional information about the model, and a link to a Shiny application featuring interactive graphs of some of the results. 
+In the rest of this paper, the data section (@sec-data) will cover the dataset used, how it was obtained, define the variables of interest that are used by our tables and graphs, and briefly explain the data cleaning process. The model section (@sec-model) will explain our proposed causal model, which would explain potential relationships in our data, the setup of our model to understand these relationships, and justification for our model. In the results section (@sec-results), we will reveal tables and graphs made on our datasets, explain what they show, and show our results from our model. In the discussion section (@sec-discussion), we will explain what we did, connect back to the real world and explain what the results could mean, the implications of our results, potential areas of improvement for the paper, and suggestions for future works. Finally, the appendix section (@sec-appendix) will extra tables and graphs from our results as well, as additional information about the model, and a link to a Shiny application featuring interactive graphs of some of the results. 
 
 
 # Data {#sec-data}
 
 ## Methodology
-The dataset used in this paper was retrieved, simulated, cleaned, analyzed, and tested using the R programming language [@citeR], tidyverse [@citetidyverse], knitr [@citeknitr], janitor [@citejanitor], dplyr [@citedplyr], ggplot2 [@citeggplot2], spotifyr [@citespotifyr], usethis [@citeusethis], arrow [@citearrow], ggcorrplot [@citeggcorrplot], and testthat [@citetestthat]. Code written in the scripts was checked and styled with lintr [@citelintr] and styler [@citestyler]. Accompanying the paper, a Shiny app [@citeshiny] using shinyWidgets [@citeshinyWidgets] was created containing interactive visualizations. The packages that were used for the model-related sections or used for the model itself are DiagrammeR [@citeDiagrammeR], rsvg [@citersvg], magrittr [@citemagrittr], DiagrammeRsvg [@citeDiagrammeRsvg], png [@citepng], rstanarm [@citerstanarm], and modelsummary [@citemodelsummary]. 
+The dataset used in this paper was retrieved, simulated, cleaned, analyzed, and tested using the R programming language [@citeR], tidyverse [@citetidyverse], knitr [@citeknitr], janitor [@citejanitor], dplyr [@citedplyr], ggplot2 [@citeggplot2], spotifyr [@citespotifyr], usethis [@citeusethis], arrow [@citearrow], ggcorrplot [@citeggcorrplot], and testthat [@citetestthat]. The packages that were used for the model-related sections or used for the model itself are DiagrammeR [@citeDiagrammeR], rsvg [@citersvg], magrittr [@citemagrittr], DiagrammeRsvg [@citeDiagrammeRsvg], png [@citepng], rstanarm [@citerstanarm], and modelsummary [@citemodelsummary]. 
 
 ## Data Source and Measurements
 The data used for the model and analysis comes from the ```playlists_analysis_data``` dataset. This dataset was constructed by using an R wrapper for Spotify's API called spotifyr [@citespotifyr] to scrape playlists complied by Spotify users antoniomendoza and wickeddreamer96 of songs from the Billboard Year-End Hot 100 singles from 2014 to 2023 [@citebillboard]. User antoniomendoza created playlists for the years 2018 to 2023, inclusive, while user wickeddreamer96 created playlists for the years 2014 to 2017, inclusive. The latest version of the data used was scraped on Tuesday March 26, 2024 at 9:46pm EDT. The Billboard Year-End Hot 100 singles list for the year 2014 onward was created based on data from Nielsen SoundScan [@citenielsen]. Nielsen SoundScan
@@ -60,7 +60,7 @@ collect data weekly from 39,000 retail outlets, venues, etc. in 19 countries suc
 
 Initially, we had scraped playlists created by Spotify that they have compiled of the top songs on the app. However, we had an insufficient amount of observations from these playlists for our dataset. The playlists we previously were using only had around 50 songs each and there were years where Spotify had not created a top song playlist for such as 2021 and 2022.
 
-Each observation in the dataset belongs to a song from the Spotify playlist that we scraped compiled by antoniomendoza and wickeddreamer96 for songs on the Billboard Year-End Hot 100 singles. For the duplicate songs that showed up in different years, they were kept as we wanted to analyze song characteristics. In total, there are 1000 observations in the ```playlists_analysis_data``` dataset, which equals to the number of songs on the Billboard Year-End Hot 100 singles lists from 2014 to 2023.
+Each observation in the dataset belongs to a song from the Spotify playlist that we scraped compiled by antoniomendoza and wickeddreamer96 for songs on the Billboard Year-End Hot 100 singles. For the duplicate songs that showed up in different years, they were kept as we wanted to analyze song characteristics. However, we also obtained duplicated songs from the same year-end playlist when calling the Spotify API and so duplicated songs in this case were removed from the dataset. In total, there are 1000 observations in the ```playlists_analysis_data``` dataset, which equals to the number of songs on the Billboard Year-End Hot 100 singles lists from 2014 to 2023.
 ```{r}
 #| label: tbl-dataset-preview
 #| tbl-cap: Preview of dataset on Billboard Year-End Hot 100 singles from 2014 to 2023 provided by Spotify
@@ -68,7 +68,8 @@ Each observation in the dataset belongs to a song from the Spotify playlist that
 #| warning: false
 #| message: false
 
-playlist_analysis_data |> 
+# Create table displaying data
+playlist_analysis_data |>
   select(hit_year, track_duration_ms, tempo, loudness, mode_name, key_mode, period) |>
   head() |>
   kable()
@@ -107,11 +108,10 @@ We ran the model using the rstanarm package [@citerstanarm] and R [@citeR] with 
 #| warning: false
 #| message: false
 
-# Referenced https://www.erikigelstrom.com/articles/causal-graphs-in-r-with-diagrammer/
-# https://stackoverflow.com/questions/42737645/how-to-export-images-of-diagrammer-in-r
+# Referenced https://www.erikigelstrom.com/articles/causal-graphs-in-r-with-diagrammer/ and https://stackoverflow.com/questions/42737645/how-to-export-images-of-diagrammer-in-r for code
 causal_model <- "digraph {
   graph []
-  # Nodes 
+  # Nodes
   node [shape = plaintext]
     A [label = 'Hit song before 2020 or during and after 2020']
     B [label = 'Modality']
@@ -134,22 +134,21 @@ causal_model <- "digraph {
     F -> E
     F -> A
 }"
-
+# Export the drawing as a png
 exporting_image <- grViz(causal_model) |>
   export_svg() |>
   charToRaw() |>
   rsvg_png("../other/sketches/graph_2_casual_model.png", width = 1000)
 
-# NOTE: Had to save diagram and read it in as a image since grViz can be only render in HTML and 
-# not in PDFs 
+# NOTE: Had to save diagram and read it in as a image since grViz can be only render in HTML and
+# not in PDFs
 # Referenced https://stackoverflow.com/questions/23861000/displaying-images-in-r-in-version-3-1-0
+# Read in the image and display it
 the_image <- readPNG("../other/sketches/graph_2_casual_model.png")
 plot.new()
 rasterImage(the_image, 0, 0, 0.8, 1.13)
 ```
 A logistic regression model was chosen because our outcome variable, if the song is a top song prior to 2020, is a binary outcome. However, alternative models were considered. Multiple linear regression model was a candidate for our model since the model has multiple predictor variables but it assumes that the outcome is continuous instead of discrete. Other regression models like negative binomial regression were not chosen since we are not dealing with discrete counts for the outcome but instead discrete binary values of 1 and 0. Our logistic regression model describes the following causal relationship (@fig-causal-model) where song characteristics predicts whatever a hit song was made prior to 2020, excluding a confounding variable, lyrics. The assumption we make is that there is a relationship between song characteristics and a top song being a hit prior to 2020. In @fig-causal-model, the reason lyrics, if there are any, is a confounding variable is because lyrics can affect not only if the song was a hit prior to 2020 but also song characteristics from the way the lyrics are performed. However, we are unable to observe the effects of lyrics directly with our data. Weakness and further improvements to the model are discussed in @sec-discussion. 
-
-\newpage
 
 # Results {#sec-results}
 In this section, we visualized our data through graphs and tables as well as present the results from our model. 
@@ -164,7 +163,7 @@ In this section, we visualized our data through graphs and tables as well as pre
 #| warning: false
 #| message: false
 
-proportion_of_each_mode <- 
+proportion_of_each_mode <-
   playlist_analysis_data |>
   # Group by if song was a hit before or during and after the pandemic
   group_by(period) |>
@@ -172,19 +171,24 @@ proportion_of_each_mode <-
   count(mode_name) |>
   # rename count column to num_of_key_mode
   rename(
-    'num_of_mode_name' = n
+    "num_of_mode_name" = n
   ) |>
-  mutate( 
-    proportion_mode_name =  round(num_of_mode_name / sum(num_of_mode_name), 2) 
+  mutate(
+    proportion_mode_name = round(num_of_mode_name / sum(num_of_mode_name), 2)
   )
 
-proportion_of_each_mode |> 
+# Referenced Telling Stories with Data by Rohan Alexander
+# (https://tellingstorieswithdata.com/) for code
+proportion_of_each_mode |>
   ggplot(mapping = aes(x = mode_name, y = proportion_mode_name)) +
-  facet_wrap(facets = vars(period), dir = "h") + 
-  geom_bar(stat = "identity", binwidth = 3, fill="#e85569") +
+  # Creates two graphs based on each period
+  facet_wrap(facets = vars(period), dir = "h") +
+  geom_bar(stat = "identity", binwidth = 3, fill = "#e85569") +
   theme_minimal() +
-  labs(x = "Modality",
-       y = "Proportion") + 
+  labs(
+    x = "Modality",
+    y = "Proportion"
+  ) +
   theme(axis.text.x = element_text(angle = 90))
 ```
 
@@ -195,13 +199,14 @@ proportion_of_each_mode |>
 #| warning: false
 #| message: false
 
-proportion_of_each_mode |> 
-  rename( 
+# Create table for dataframe pertaining to modality
+proportion_of_each_mode |>
+  rename(
     "Period" = period,
     "Modality" = mode_name,
     "Count of each mode" = num_of_mode_name,
     "Proportion of each mode" = proportion_mode_name
-    ) |>
+  ) |>
   kable()
 ```
 ```{r}
@@ -211,7 +216,7 @@ proportion_of_each_mode |>
 #| warning: false
 #| message: false
 
-proportion_of_each_key_mode <- 
+proportion_of_each_key_mode <-
   playlist_analysis_data |>
   # Group by if song was a hit before or during and after the pandemic
   group_by(period) |>
@@ -219,19 +224,24 @@ proportion_of_each_key_mode <-
   count(key_mode) |>
   # rename count column to num_of_key_mode
   rename(
-    'num_of_key_mode' = n
+    "num_of_key_mode" = n
   ) |>
-  mutate( 
-    proportion_key_mode =  round(num_of_key_mode / sum(num_of_key_mode), 2)
-  ) 
+  mutate(
+    proportion_key_mode = round(num_of_key_mode / sum(num_of_key_mode), 2)
+  )
 
-proportion_of_each_key_mode |> 
+# Referenced Telling Stories with Data by Rohan Alexander
+# (https://tellingstorieswithdata.com/) for code
+proportion_of_each_key_mode |>
   ggplot(mapping = aes(x = key_mode, y = proportion_key_mode)) +
-  facet_wrap(facets = vars(period), dir = "v") + 
-  geom_bar(stat="identity", fill="#3E509A") +
+  # Creates two graphs based on their period
+  facet_wrap(facets = vars(period), dir = "v") +
+  geom_bar(stat = "identity", fill = "#3E509A") +
   theme_minimal() +
-  labs(x = "Scale",
-       y = "Proportion") + 
+  labs(
+    x = "Scale",
+    y = "Proportion"
+  ) +
   theme(axis.text.x = element_text(angle = 90))
 ```
 @fig-mode-bar and @tbl-mode-table reveals that a proportion of hit songs before and during and after 2020 that had melodies in a major key was around ~60% (61% before 2020 and 63% from 2020 onwards). Songs in a minor key made up about 40% or less of songs (39% before 2020 and 37% from 2020 onwards) from 2014 to 2023 on Billboard's Year-End Hot 100 singles list. There was a slight increase in songs in a major key from 2020 afterwards however songs in a major key making up a majority of Billboard's Year-End Hot 100 singles stayed consist before 2020 and 2020 onwards.
@@ -247,14 +257,16 @@ When looking into the specific scales of the songs, @fig-key-mode-bar and @tbl-s
 #| warning: false
 #| message: false
 
-playlist_analysis_data |> 
+playlist_analysis_data |>
   ggplot(aes(x = hit_year, y = track_duration_ms, color = hit_year)) +
   geom_smooth() +
-  geom_jitter() +  # So we can see all points
+  geom_jitter() + # So we can see all points
   geom_point(alpha = 0.3) +
   theme_minimal() +
-  labs(x = "Hit year",
-       y = "Duration of song (in ms)") + 
+  labs(
+    x = "Hit year",
+    y = "Duration of song (in ms)"
+  ) +
   geom_vline(xintercept = 2020, linetype = "dashed") +
   scale_color_gradient(low = "#3E509A", high = "#e85569", guide = "none")
 ```
@@ -265,14 +277,18 @@ playlist_analysis_data |>
 #| echo: false
 #| warning: false
 #| message: false
-#| 
-playlist_analysis_data |> 
+# Referenced Telling Stories with Data by Rohan Alexander
+# (https://tellingstorieswithdata.com/) for code
+playlist_analysis_data |>
   ggplot(mapping = aes(x = track_duration_ms)) +
-  facet_wrap(facets = vars(period), dir = "v") + 
-  geom_histogram(binwidth = 7000, fill="#e85569") +
+  # Creates two histograms based on period
+  facet_wrap(facets = vars(period), dir = "v") +
+  geom_histogram(binwidth = 7000, fill = "#e85569") +
   theme_minimal() +
-  labs(x = "Duration of song (in ms)",
-       y = "Count")
+  labs(
+    x = "Duration of song (in ms)",
+    y = "Count"
+  )
 ```
 ```{r}
 #| label: tbl-track-duration-stats-before
@@ -281,14 +297,14 @@ playlist_analysis_data |>
 #| warning: false
 #| message: false
 
-playlist_analysis_data |> 
+playlist_analysis_data |>
   # Filter for "Before Pandemic"
   filter(period == "Before Pandemic") |>
   # Choose track_duration_ms
   select(track_duration_ms) |>
   # Rename columns
-  rename (
-    "Duration of song (in ms)"= track_duration_ms
+  rename(
+    "Duration of song (in ms)" = track_duration_ms
   ) |>
   summary() |>
   kable()
@@ -301,14 +317,14 @@ playlist_analysis_data |>
 #| warning: false
 #| message: false
 
-playlist_analysis_data |> 
+playlist_analysis_data |>
   # Filter for During and After Pandemic
   filter(period == "During and After Pandemic") |>
   # Choose track_duration_ms
   select(track_duration_ms) |>
   # Rename columns
-  rename (
-    "Duration of song (in ms)"= track_duration_ms
+  rename(
+    "Duration of song (in ms)" = track_duration_ms
   ) |>
   summary() |>
   kable()
@@ -319,19 +335,26 @@ playlist_analysis_data |>
 ### Loudness
 ```{r}
 #| label: fig-loudness-scatterplot
-#| fig-cap: "Relationship between the hit year and loudness of a song (in dB) on Billboard's Year-End Hot 100 singles list. Songs from the same year are grouped in the same colour and the horizontal, dashed line divides the hit tracks before 2020 and hit tracks from 2020 and beyond. Blue, smoother line describes the overall trend and relationship between hit year and loudness." 
+#| fig-cap: "Relationship between the hit year and loudness of a song (in dB) on Billboard's Year-End Hot 100 singles list. Songs from the same year are grouped in the same colour and the horizontal, dashed line divides the hit tracks before 2020 and hit tracks from 2020 and beyond. Blue, smoother line describes the overall trend and relationship between hit year and loudness."
 #| echo: false
 #| warning: false
 #| message: false
+# Referenced Telling Stories with Data by Rohan Alexander
+# (https://tellingstorieswithdata.com/) for code
 
-playlist_analysis_data |> 
+# Creates scatterplot
+playlist_analysis_data |>
   ggplot(aes(x = hit_year, y = loudness, color = hit_year)) +
   geom_smooth() +
-  geom_jitter() +  # So we can see all points
+  geom_jitter() + # So we can see all points
   geom_point(alpha = 0.3) +
   theme_minimal() +
-  labs(x = "Hit year",
-       y = "Loudness of song (in dB)") + 
+  labs(
+    x = "Hit year",
+    y = "Loudness of song (in dB)"
+  ) +
+  # Creates vertical line to show divide between top songs before 2020 and 2020
+  # onwards
   geom_vline(xintercept = 2020, linetype = "dashed") +
   scale_color_gradient(low = "#3E509A", high = "#e85569", guide = "none")
 ```
@@ -341,13 +364,18 @@ playlist_analysis_data |>
 #| echo: false
 #| warning: false
 #| message: false
-playlist_analysis_data |> 
+# Referenced Telling Stories with Data by Rohan Alexander
+# (https://tellingstorieswithdata.com/) for code
+playlist_analysis_data |>
   ggplot(mapping = aes(x = loudness)) +
-  facet_wrap(facets = vars(period), dir = "v") + 
-  geom_histogram(binwidth = 0.3, fill="#3E509A") +
+  # Creates 2 histograms based on their period
+  facet_wrap(facets = vars(period), dir = "v") +
+  geom_histogram(binwidth = 0.3, fill = "#3E509A") +
   theme_minimal() +
-  labs(x = "Loudness of song (in dB)",
-       y = "Count")
+  labs(
+    x = "Loudness of song (in dB)",
+    y = "Count"
+  )
 ```
 ```{r}
 #| label: tbl-loudness-stats-before
@@ -356,14 +384,14 @@ playlist_analysis_data |>
 #| warning: false
 #| message: false
 
-playlist_analysis_data |> 
+playlist_analysis_data |>
   # Filter for "Before Pandemic"
   filter(period == "Before Pandemic") |>
   # Choose loudness
   select(loudness) |>
   # Rename columns
-  rename (
-    "Loudness of song (in dB)"= loudness
+  rename(
+    "Loudness of song (in dB)" = loudness
   ) |>
   summary() |>
   kable()
@@ -375,14 +403,14 @@ playlist_analysis_data |>
 #| warning: false
 #| message: false
 
-playlist_analysis_data |> 
+playlist_analysis_data |>
   # Filter for "During and After Pandemic"
   filter(period == "During and After Pandemic") |>
   # Choose loudness
   select(loudness) |>
   # Rename columns
-  rename (
-    "Loudness of song (in dB)"= loudness
+  rename(
+    "Loudness of song (in dB)" = loudness
   ) |>
   summary() |>
   kable()
@@ -393,19 +421,27 @@ playlist_analysis_data |>
 ### Tempo
 ```{r}
 #| label: fig-tempo-scatterplot
-#| fig-cap: "Relationship between the hit year and tempo of a song (the beats per minutes (BPM) of a song) on Billboard's Year-End Hot 100 singles list. Songs from the same year are grouped in the same colour and the horizontal, dashed line divides the hit tracks before 2020 and hit tracks from 2020 and beyond. Blue, smoother line describes the overall trend and relationship between hit year and tempo." 
+#| fig-cap: "Relationship between the hit year and tempo of a song (the beats per minutes (BPM) of a song) on Billboard's Year-End Hot 100 singles list. Songs from the same year are grouped in the same colour and the horizontal, dashed line divides the hit tracks before 2020 and hit tracks from 2020 and beyond. Blue, smoother line describes the overall trend and relationship between hit year and tempo."
 #| echo: false
 #| warning: false
 #| message: false
+# Referenced Telling Stories with Data by Rohan Alexander
+# (https://tellingstorieswithdata.com/) for code
 
-playlist_analysis_data |> 
+# Creates scatterplot
+playlist_analysis_data |>
   ggplot(aes(x = hit_year, y = tempo, color = hit_year)) +
+  # Creates smoother line
   geom_smooth() +
-  geom_jitter() +  # So we can see all points
+  geom_jitter() + # So we can see all points
   geom_point(alpha = 0.3) +
   theme_minimal() +
-  labs(x = "Hit year",
-       y = "Tempo of song (BPM)") + 
+  labs(
+    x = "Hit year",
+    y = "Tempo of song (BPM)"
+  ) +
+  # Creates vertical line to represent the divide between top songs prior to
+  # 2020 and 2020 onwards
   geom_vline(xintercept = 2020, linetype = "dashed") +
   scale_color_gradient(low = "#3E509A", high = "#e85569", guide = "none")
 ```
@@ -415,14 +451,18 @@ playlist_analysis_data |>
 #| echo: false
 #| warning: false
 #| message: false
-
-playlist_analysis_data |> 
+# Referenced Telling Stories with Data by Rohan Alexander
+# (https://tellingstorieswithdata.com/) for code
+playlist_analysis_data |>
   ggplot(mapping = aes(x = tempo)) +
-  facet_wrap(facets = vars(period), dir = "v") + 
-  geom_histogram(binwidth = 3, fill="#e85569") +
+  # Creates 2 histograms based on their period
+  facet_wrap(facets = vars(period), dir = "v") +
+  geom_histogram(binwidth = 3, fill = "#e85569") +
   theme_minimal() +
-  labs(x = "Tempo of song (BPM)",
-       y = "Count")
+  labs(
+    x = "Tempo of song (BPM)",
+    y = "Count"
+  )
 ```
 ```{r}
 #| label: tbl-tempo-stats-before
@@ -431,14 +471,14 @@ playlist_analysis_data |>
 #| warning: false
 #| message: false
 
-playlist_analysis_data |> 
+playlist_analysis_data |>
   # Filter for "Before Pandemic"
   filter(period == "Before Pandemic") |>
   # Choose tempo
   select(tempo) |>
   # Rename columns
-  rename (
-    "Tempo of song (BPM)"= tempo
+  rename(
+    "Tempo of song (BPM)" = tempo
   ) |>
   summary() |>
   kable()
@@ -450,14 +490,14 @@ playlist_analysis_data |>
 #| warning: false
 #| message: false
 
-playlist_analysis_data |> 
+playlist_analysis_data |>
   # Filter for "During and After Pandemic"
   filter(period == "During and After Pandemic") |>
   # Choose tempo
   select(tempo) |>
   # Rename columns
-  rename (
-    "Tempo of song (BPM)"= tempo
+  rename(
+    "Tempo of song (BPM)" = tempo
   ) |>
   summary() |>
   kable()
@@ -465,7 +505,7 @@ playlist_analysis_data |>
 @fig-tempo-scatterplot reveals almost no change in tempo overall across top songs from 2014 to 2023 based on the blue smoother line appearing to be flat. However, looking at @tbl-tempo-stats-before and @tbl-tempo-stats-during-after it shows that both the median and mean tempo of top songs before 2020 (about 120 BPM and 121 BPM, respectively) are lower or about equal than the median and mean tempo of top songs during and after 2020, which is about 120 BPM and 122 BPM, respectively. @fig-tempo-hist shows that in both periods of time, their distributions have skewness close to zero however there is less dispersion around the mean for hit songs prior to 2020. These results suggest that the the tempo of top songs on Billboard's list are slightly faster during and after 2020. 
 
 \newpage
-## Model Results
+## Model Results {#sec-model-results}
 
 @tbl-model-result and @fig-model-result-ci shows the results of our logistic regression model. @tbl-model-result presents the coefficient estimates obtained for our model with their mean absolute deviation (MAD) while @fig-model-result-ci showcases the coefficient estimates (the dot) alongside their 90% credible interval (the line). Coefficient estimates represents the change in the log odds of a song being a hit song prior to 2020 when one predictor variable changes by 1 unit as the other predictors stays constant [@citecoefficientsdef]. With the given data, the 90% credible interval is an interval where the true value of our coefficient estimate has a 90% probability of lying within [@citebayesiandef]. Mean absolute deviation is the average distance of a data point representing a hit song and the mean.
 
@@ -479,7 +519,9 @@ playlist_analysis_data |>
 #| message: false
 
 modelsummary(
+  # List out information from hit_song_model_results
   list("A hit song before 2020" = hit_song_model_results),
+  # Specify we're using MAD as the statistic
   statistic = "mad"
 )
 ```
@@ -490,7 +532,9 @@ modelsummary(
 #| echo: false
 #| warning: false
 #| message: false
-
+# Referenced Telling Stories with Data by Rohan Alexander
+# (https://tellingstorieswithdata.com/) for code
+# Specify credible interval to be 90% and present model results
 modelplot(hit_song_model_results, conf_level = 0.9) +
   labs(x = "90 per cent credible interval")
 ```
@@ -499,10 +543,25 @@ modelplot(hit_song_model_results, conf_level = 0.9) +
 \newpage
 
 # Discussion {#sec-discussion}
+TO REMOVE:
+- What is done in this paper?
+- What is something that we learn about the world? What is another thing that we learn about the world? (connect back to the real world and explain what the results could mean & explain the implications of our results)
+- What are some weaknesses of what was done? (potential areas of improvement for the paper)
+- What is left to learn or how should we proceed in the future? (suggestions for future works)
 
-[To Do]
+An overview that was done is that we did preliminary analysis of data by graphing relationship between song characteristics and other variables in the dataset such as hit year as seen in @sec-results. We also introduced our logistic regression model in a Bayesian framework for top songs prior to 2020 where their results were shown in @sec-model-results.
 
-Weakness: There were more songs available prior to 2020 in our dataset. This could have impacted the model and the coefficient estimates seen. 
+
+
+
+
+
+
+## Areas of improvement
+
+There were more songs available prior to 2020 in our dataset. This could have impacted the model and the coefficient estimates seen. 
+
+## Next steps 
 
 \newpage
 
@@ -511,11 +570,19 @@ Weakness: There were more songs available prior to 2020 in our dataset. This cou
 # Appendix {#sec-appendix}
 
 ## Shiny application 
-A Shiny application featuring interactive graphs from the paper can be found here:
-https://49z7k8-emily-su.shinyapps.io/top-songs-characteristics-app/
+Accompanying the paper, a Shiny app [@citeshiny] using shinyWidgets [@citeshinyWidgets] and plotly [@citeplotly] was created that contains interactive visualizations. The application can be found here: https://49z7k8-emily-su.shinyapps.io/top-songs-characteristics-app/
+
+## Acknowledgments 
+We would like the acknowledge @citetellingstorieswithdata for some of the R code used in this paper to produce the tables and graphs.
+
+## Note on Reproducing 
+To reproduce the results in the paper, first run the scripts found in the scripts folder of the GitHub repository corresponding to the paper starting with the script, 00-install_packages.R to install the necessary packages. 
+
+## Code styling 
+Code written in the scripts was checked and styled with lintr [@citelintr] and styler [@citestyler]. 
 
 ## Posterior predictive check for model {#sec-model-details-posterior-check}
-@fig-posteriorpredictive shows that the posterior distribution of the fitted model is consistent with the actual data. 
+@fig-posteriorpredictive shows that the posterior distribution of the fitted model is consistent with the actual data using code modified from @citetellingstorieswithdata. 
 ```{r}
 #| echo: false
 #| eval: true
@@ -525,14 +592,15 @@ https://49z7k8-emily-su.shinyapps.io/top-songs-characteristics-app/
 #| fig-cap: "How the data impacts how the model fits"
 #| fig-subcap: ["Posterior prediction check for the model"]
 #| layout-ncol: 1
-
+# Referenced Telling Stories with Data by Rohan Alexander
+# (https://tellingstorieswithdata.com/) for code
 rstanarm::pp_check(hit_song_model_results) +
   theme_minimal() +
   theme(legend.position = "bottom")
 ```
 
 ## Diagnostics for model {#sec-model-details-diagnostics}
-@fig-convergencecheck shows that the sampling algorithm used, the Markov chain Monte Carlo (MCMC) algorithm, did not run into issues as the posterior distribution for the model was created. Both graphs do not show anything abnormal.
+@fig-convergencecheck shows that the sampling algorithm used, the Markov chain Monte Carlo (MCMC) algorithm, did not run into issues as the posterior distribution for the model was created. Using the checks presented by @citetellingstorieswithdata, both graphs do not show anything abnormal since the lines in the trace plot fluctuates a lot horizontally and all coefficients are close to 1 and less than 1.1 in the rhat plot.
 ```{r}
 #| echo: false
 #| eval: true
@@ -542,9 +610,11 @@ rstanarm::pp_check(hit_song_model_results) +
 #| fig-cap: "Checking the convergence of the Markov chain Monte Carlo (MCMC) algorithm for hit song model"
 #| fig-subcap: ["Trace plot for model", "Rhat plot for model"]
 #| layout-ncol: 2
-
-plot(hit_song_model_results, "trace")
-
+# Referenced Telling Stories with Data by Rohan Alexander
+# (https://tellingstorieswithdata.com/) for code
+# Creates trace plot
+plot(hit_song_model_results, "trace") + theme_minimal()
+# Creates rhat plot
 plot(hit_song_model_results, "rhat") + theme_minimal()
 ```
 \newpage
@@ -558,13 +628,14 @@ plot(hit_song_model_results, "rhat") + theme_minimal()
 #| message: false
 
 # Referenced https://rpubs.com/Alema/1000474
-numeric_playlist_analysis_data <- 
+numeric_playlist_analysis_data <-
   playlist_analysis_data |>
   select(-c(mode_name, key_mode, period, hit_year))
 
-ggcorrplot(cor(numeric_playlist_analysis_data), 
-           hc.order = TRUE,
-           outline.color = "white", lab = TRUE, legend.title = "Correlation") 
+ggcorrplot(cor(numeric_playlist_analysis_data),
+  hc.order = TRUE,
+  outline.color = "white", lab = TRUE, legend.title = "Correlation"
+)
 ```
 
 \newpage
@@ -578,18 +649,16 @@ ggcorrplot(cor(numeric_playlist_analysis_data),
 #| warning: false
 #| message: false
 
-proportion_of_each_key_mode |> 
-  rename( 
+proportion_of_each_key_mode |>
+  rename(
     "Period" = period,
     "Scale" = key_mode,
     "Count of each scale" = num_of_key_mode,
     "Proportion of each scale" = proportion_key_mode
-    ) |>
+  ) |>
   kable()
 ```
 
 \newpage
 
 # References
-
-
