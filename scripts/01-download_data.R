@@ -6,12 +6,8 @@
 # License: MIT
 # Pre-requisites: 00-install_packages.R has been ran to install the necessary
 # packages.
-# NOTE: This script was checked through lintr for styling
-
-# IMPORTANT NOTE ABOUT THIS SCRIPT:
-# 1. popularity column is updated frequently by Spotify and there is a chance
-# that the results when replicated might be slightly off from what is described
-# in the paper if this script is ran.
+# IMPORTANT NOTES:
+# 1. This script was checked through lintr for styling
 
 # 2. If this script does not run it is likely because you need to create a
 # Spotify Developer Account and a new app for spotifyr. After doing this,
