@@ -8,6 +8,7 @@
 # 02-data_cleaning.R, and 03-test_data.R has been ran to install
 # necessary packages, download raw data, and clean the data,
 # and test the data, respectively.
+# NOTE: This script was checked through lintr for styling
 
 
 #### Workspace setup ####

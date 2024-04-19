@@ -6,6 +6,7 @@
 # License: MIT
 # Pre-requisites: 00-install_packages.R and 01-download_data.R has been ran
 # to install necessary packages and download raw data.
+# NOTE: This script was checked through lintr for styling
 
 #### Workspace setup ####
 library(tidyverse)

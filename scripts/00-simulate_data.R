@@ -6,6 +6,7 @@
 # License: MIT
 # Pre-requisites: 00-install_packages.R has been ran to install necessary
 # packages.
+# NOTE: This script was checked through lintr for styling
 #### Workspace setup ####
 library(tidyverse)
 library(testthat)

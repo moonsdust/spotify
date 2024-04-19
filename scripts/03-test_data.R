@@ -7,6 +7,7 @@
 # Pre-requisites: 00-install_packages.R, 01-download_data.R,
 # and 02-data_cleaning.R has been ran to install necessary packages,
 # download raw data, and clean the data, respectively.
+# NOTE: This script was checked through lintr for styling
 
 #### Workspace setup ####
 library(tidyverse)

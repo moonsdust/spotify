@@ -6,6 +6,7 @@
 # License: MIT
 # Pre-requisites: 00-install_packages.R has been ran to install the necessary
 # packages.
+# NOTE: This script was checked through lintr for styling
 
 # IMPORTANT NOTE ABOUT THIS SCRIPT:
 # 1. popularity column is updated frequently by Spotify and there is a chance
